@@ -14,7 +14,7 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
   const [hovered, setHovered] = useState(false)
 
   // Use a placeholder texture for now - will be replaced with actual design
-  const texture = useTexture("/placeholder.svg?height=512&width=512")
+  const texture = useTexture("/placeholder.svg")
 
   useFrame((state, delta) => {
     if (cardRef.current) {
@@ -24,7 +24,7 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
       cardRef.current.rotation.z = rotation[2]
 
       // Add a subtle floating animation
-      cardRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.05
+      cardRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.05
     }
   })
 
@@ -35,7 +35,7 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
       onPointerOut={() => setHovered(false)}
       scale={hovered ? 1.05 : 1}
     >
-      {/* Card base */}
+      {/* Card base with subtle gradient */}
       <mesh castShadow receiveShadow position={[0, 0, 0]}>
         <boxGeometry args={[3.5, 2, 0.05]} />
         <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.2} />
@@ -43,14 +43,28 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
 
       {/* Front face content */}
       <group position={[0, 0, 0.03]}>
-        <Text position={[-1.2, 0.6, 0]} fontSize={0.25} color="#262626" anchorX="left">
+        <Text 
+          position={[-1.2, 0.6, 0]} 
+          fontSize={0.25}
+          color="#262626" 
+          anchorX="left"
+          font="/fonts/Inter-Bold.woff"
+          letterSpacing={0.02}
+        >
           PAUL MCCARTNEY
         </Text>
 
-        <Text position={[-1.2, 0.3, 0]} fontSize={0.12} color="#262626" anchorX="left">
+        <Text 
+          position={[-1.2, 0.3, 0]} 
+          fontSize={0.12} 
+          color="#404040" 
+          anchorX="left"
+          font="/fonts/Inter-Regular.woff"
+        >
           Artist, Producer, Songwriter • BMI
         </Text>
 
+        {/* Profile image */}
         <mesh position={[1.2, 0.5, 0]} castShadow>
           <circleGeometry args={[0.4, 32]} />
           <meshStandardMaterial map={texture} />
@@ -77,27 +91,45 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
         </group>
 
         {/* Contract info */}
-        <Text position={[-1.2, -0.2, 0]} fontSize={0.12} color="#262626" anchorX="left" font="/fonts/Geist-Bold.ttf">
+        <Text 
+          position={[-1.2, -0.2, 0]} 
+          fontSize={0.12} 
+          color="#262626" 
+          anchorX="left" 
+          font="/fonts/Inter-Bold.woff"
+        >
           CONTRACTING INFO
         </Text>
 
         <Text
           position={[-1.2, -0.4, 0]}
           fontSize={0.08}
-          color="#262626"
+          color="#404040"
           anchorX="left"
-          font="/fonts/Geist-Regular.ttf"
           maxWidth={1.5}
+          font="/fonts/Inter-Regular.woff"
         >
           Paul McCartney 10 Downing St. London, UK SW1A2AA
         </Text>
 
         {/* Publishing info */}
-        <Text position={[0.5, -0.2, 0]} fontSize={0.12} color="#262626" anchorX="left" font="/fonts/Geist-Bold.ttf">
+        <Text 
+          position={[0.5, -0.2, 0]} 
+          fontSize={0.12} 
+          color="#262626" 
+          anchorX="left" 
+          font="/fonts/Inter-Bold.woff"
+        >
           PUB LINE
         </Text>
 
-        <Text position={[0.5, -0.4, 0]} fontSize={0.08} color="#262626" anchorX="left" font="/fonts/Geist-Regular.ttf">
+        <Text 
+          position={[0.5, -0.4, 0]} 
+          fontSize={0.08} 
+          color="#404040" 
+          anchorX="left"
+          font="/fonts/Inter-Regular.woff"
+        >
           James Paul McCartney BMI IPI 12345678909
         </Text>
       </group>
