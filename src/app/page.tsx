@@ -1,14 +1,12 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
-import { Canvas } from "@react-three/fiber"
+import { useRef } from "react"
 import { useScroll, useSpring, motion, useTransform } from "framer-motion"
-import BusinessCard from "@/components/business-card"
 import DetailedView from "@/components/detailed-view"
+import CardTemplate from "@/components/business-card/card-template"
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [scrollY, setScrollY] = useState(0)
 
   // Set up smooth scrolling with spring physics
   const { scrollYProgress } = useScroll({
@@ -21,20 +19,12 @@ export default function Home() {
     restDelta: 0.001,
   })
 
-  // Track scroll progress for animations
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((v) => {
-      setScrollY(v)
-    })
-    return unsubscribe
-  }, [scrollYProgress])
-
   return (
     <div 
       ref={containerRef} 
       className="h-screen overflow-auto snap-y snap-mandatory hide-scrollbar"
     >
-      <section className="h-screen w-full relative snap-start flex flex-col items-center justify-center">
+      <section className="h-screen w-full relative snap-start flex flex-col justify-between items-center">
         {/* Parallax background */}
         <motion.div 
           className="absolute inset-0 bg-gradient-to-b from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
@@ -42,19 +32,17 @@ export default function Home() {
             y: useTransform(smoothScrollProgress, [0, 1], [0, -100]) 
           }}
         />
+        {/* Spacer for top */}
+        <div></div>
         
-        {/* Card container */}
-        <div className="relative w-full max-w-md h-64 md:h-96 z-10">
-          <Canvas shadows camera={{ position: [0, 0, 4], fov: 50 }}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-            <BusinessCard rotation={[0, scrollY * Math.PI * 2, 0]} />
-          </Canvas>
+        {/* Card container - centered */}
+        <div className="relative w-full flex items-center justify-center max-w-md h-64 md:h-96 z-10">
+          <CardTemplate />
         </div>
         
-        {/* Scroll indicator */}
+        {/* Scroll indicator - at bottom */}
         <motion.div
-          className="absolute bottom-10 left-0 right-0 flex justify-center items-center"
+          className="relative mb-[18px] z-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
