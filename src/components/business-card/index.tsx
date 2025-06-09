@@ -16,7 +16,7 @@ export default function BusinessCard({ rotation = [0, 0, 0] }: BusinessCardProps
   // Use a placeholder texture for now - will be replaced with actual design
   const texture = useTexture("/placeholder.svg")
 
-  useFrame((state, _delta) => {
+  useFrame((state) => {
     if (cardRef.current) {
       // Apply the rotation from props (controlled by scroll)
       cardRef.current.rotation.x = rotation[0]
