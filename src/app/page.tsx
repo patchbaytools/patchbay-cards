@@ -5,7 +5,7 @@ import { useScroll, useSpring, motion, useTransform } from "framer-motion"
 import DetailedView from "@/components/detailed-view"
 import CardTemplate from "@/components/business-card/card-template"
 
-export default function Home() {
+const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Set up smooth scrolling with spring physics
@@ -77,3 +77,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home;
