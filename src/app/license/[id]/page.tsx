@@ -6,8 +6,28 @@ import { useParams } from "next/navigation"
 import CardTemplate from "@/components/business-card/card-template"
 import DetailedView from "@/components/detailed-view"
 
+// Define CardData type
+export type CardData = {
+  id: string
+  name: string
+  title: string
+  subtitle: string
+  email: string
+  phone: string
+  location: string
+  image: string
+  contractingInfo: string[]
+  pubLine: string[]
+  metadata: {
+    isrc: string[]
+    upc: string
+    rights: string
+    publisher: string
+  }
+}
+
 // Mock API call
-const fetchCardData = async (id: string) => {
+const fetchCardData = async (id: string): Promise<CardData> => {
   // Simulate network delay
   await new Promise((res) => setTimeout(res, 500))
   // Return Paul McCartney's data regardless of id
@@ -41,7 +61,7 @@ const fetchCardData = async (id: string) => {
 
 const LicensePage = () => {
   const { id } = useParams<{ id: string }>()
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<CardData | undefined>(undefined)
   const [loading, setLoading] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
 
