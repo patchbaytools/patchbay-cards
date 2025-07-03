@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { useScroll, useSpring, motion, useTransform } from "framer-motion"
-import CardTemplate from "@/components/business-card/card-template"
+import CardTemplate from "@/components/business-card"
 import DetailedView from "@/components/detailed-view"
 import type { CardData } from "@/lib/getCardData"
 
