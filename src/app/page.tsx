@@ -5,6 +5,9 @@ import { useScroll, useSpring, motion, useTransform } from "framer-motion"
 import DetailedView from "@/components/detailed-view"
 import CardTemplate from "@/components/business-card/card-template"
 
+// TODO: If card is not found, or user tries to enter a non-card url, 
+// redirect to a create your own card/patchbay registration flow
+
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
