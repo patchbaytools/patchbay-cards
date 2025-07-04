@@ -1,13 +1,16 @@
-import type { Config } from "tailwindcss"
-import animate from "tailwindcss-animate"
-import defaultTheme from "tailwindcss/defaultTheme"
+import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        inconsolata: ['var(--inconsolata-font)', ...defaultTheme.fontFamily.mono],
+        inconsolata: [
+          "var(--inconsolata-font)",
+          ...defaultTheme.fontFamily.mono,
+        ],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -74,5 +77,5 @@ const config: Config = {
     },
   },
   plugins: [animate],
-}
-export default config 
+};
+export default config;
