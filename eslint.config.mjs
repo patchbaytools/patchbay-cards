@@ -30,14 +30,14 @@ const eslintConfig = [
         "@typescript-eslint/consistent-type-imports": [
           "warn",
           {
-            "prefer": "type-imports",
-            "fixStyle": "inline-type-imports"
-          }
+            prefer: "type-imports",
+            fixStyle: "inline-type-imports",
+          },
         ],
         "import/order": [
           "warn",
           {
-            "groups": [
+            groups: [
               "builtin",
               "external",
               "internal",
@@ -45,67 +45,67 @@ const eslintConfig = [
               "sibling",
               "index",
               "object",
-              "unknown"
+              "unknown",
             ],
-            "pathGroups": [
+            pathGroups: [
               {
-                "pattern": "{react,react/**,next,next/**}",
-                "group": "external",
-                "position": "before"
+                pattern: "{react,react/**,next,next/**}",
+                group: "external",
+                position: "before",
               },
               {
-                "pattern": "motion/**",
-                "group": "external",
-                "patternOptions": { "matchBase": true },
-                "position": "before"
+                pattern: "motion/**",
+                group: "external",
+                patternOptions: { matchBase: true },
+                position: "before",
               },
               {
-                "pattern": "@lib/**",
-                "group": "internal",
-                "patternOptions": { "matchBase": true }
+                pattern: "@lib/**",
+                group: "internal",
+                patternOptions: { matchBase: true },
               },
               {
-                "pattern": "react-icons/**",
-                "group": "object",
-                "patternOptions": { "matchBase": true }
+                pattern: "react-icons/**",
+                group: "object",
+                patternOptions: { matchBase: true },
               },
               {
-                "pattern": "*.{css,scss}",
-                "group": "unknown",
-                "patternOptions": { "matchBase": true },
-                "position": "after"
-              }
+                pattern: "*.{css,scss}",
+                group: "unknown",
+                patternOptions: { matchBase: true },
+                position: "after",
+              },
             ],
-            "pathGroupsExcludedImportTypes": [
+            pathGroupsExcludedImportTypes: [
               "react",
               "next",
               "motion",
-              "react-icons"
+              "react-icons",
             ],
             "newlines-between": "always",
-            "alphabetize": {
-              "order": "asc",
-              "caseInsensitive": true
-            }
-          }
+            alphabetize: {
+              order: "asc",
+              caseInsensitive: true,
+            },
+          },
         ],
         "@typescript-eslint/no-unused-vars": [
           "warn",
           {
-            "ignoreRestSiblings": true,
-            "argsIgnorePattern": "^_",
-            "destructuredArrayIgnorePattern": "^_",
-            "varsIgnorePattern": "^_"
-          }
+            ignoreRestSiblings: true,
+            argsIgnorePattern: "^_",
+            destructuredArrayIgnorePattern: "^_",
+            varsIgnorePattern: "^_",
+          },
         ],
         "@typescript-eslint/require-await": "off",
         "@typescript-eslint/no-misused-promises": [
           "error",
           {
-            "checksVoidReturn": {
-              "attributes": false
-            }
-          }
+            checksVoidReturn: {
+              attributes: false,
+            },
+          },
         ],
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/prefer-nullish-coalescing": "off",
@@ -117,9 +117,9 @@ const eslintConfig = [
         "@typescript-eslint/no-unsafe-member-access": "warn",
         "@typescript-eslint/no-unsafe-call": "warn",
         "@typescript-eslint/no-unsafe-argument": "warn",
-        "@typescript-eslint/no-unsafe-return": "warn"
-      }
-    })[0]
+        "@typescript-eslint/no-unsafe-return": "warn",
+      },
+    })[0],
   },
 ];
 
