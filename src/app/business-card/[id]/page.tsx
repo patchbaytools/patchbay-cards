@@ -1,12 +1,13 @@
-import { getCardData } from "@/lib/getCardData"
-import CardPageContent from "./CardPageContent"
+// ** Custom Components, Hooks, Utils, etc.
+import BusinessCard from "@/app/business-card/[id]/BusinessCard";
+import { getCardData } from "@/lib/getCardData";
 
-export default async function Page({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
 }) {
-  const resolvedParams = await params
-  const data = await getCardData(resolvedParams.id)
-  return <CardPageContent data={data} id={resolvedParams.id} />
+  const resolvedParams = await params;
+  const data = await getCardData(resolvedParams.id);
+  return <BusinessCard data={data} id={resolvedParams.id} />;
 }
