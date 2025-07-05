@@ -1,36 +1,39 @@
 import "server-only";
 
 export type CardData = {
-  id: string;
-  name: string;
-  title: string;
-  subtitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  image: string;
-  contractingInfo: string[];
-  pubLine: string[];
+  id: string | undefined;
+  name: string | undefined;
+  title: string | undefined;
+  subtitle: string | undefined;
+  email: string | undefined;
+  phone: string | undefined;
+  location: string | undefined;
+  image: string | undefined;
+  contractingInfo: string[] | undefined;
+  pubLine: string[] | undefined;
   metadata: {
-    isrc: string[];
-    upc: string;
-    rights: string;
-    publisher: string;
+    isrc: string[] | undefined;
+    upc: string | undefined;
+    rights: string | undefined;
+    publisher: string | undefined;
   };
 };
 
-const FALLBACK = "N/A";
+const FALLBACK = undefined;
 
-export async function getCardData(id: string): Promise<CardData> {
+export async function getCardData(custom_endpoint: string): Promise<CardData> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/business-card/${id}/`,
-      { cache: "no-store" }
-    );
-    if (!res.ok) throw new Error("Not found");
+    const url = `${process.env.NEXT_PATCHBAY_API_URL}/api/v1/cards/public/${custom_endpoint}`;
+
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Not found - Status: ${res.status}`);
+    }
+
     const data = await res.json();
+
     return {
-      id: data?.id ?? id ?? FALLBACK,
+      id: data?.id ?? custom_endpoint ?? FALLBACK,
       name: data?.name ?? FALLBACK,
       title: data?.title ?? FALLBACK,
       subtitle: data?.subtitle ?? FALLBACK,
@@ -56,9 +59,9 @@ export async function getCardData(id: string): Promise<CardData> {
         publisher: data?.metadata?.publisher ?? FALLBACK,
       },
     };
-  } catch {
+  } catch (error) {
     return {
-      id,
+      id: FALLBACK,
       name: FALLBACK,
       title: FALLBACK,
       subtitle: FALLBACK,
@@ -66,10 +69,10 @@ export async function getCardData(id: string): Promise<CardData> {
       phone: FALLBACK,
       location: FALLBACK,
       image: FALLBACK,
-      contractingInfo: [FALLBACK],
-      pubLine: [FALLBACK],
+      contractingInfo: [],
+      pubLine: [],
       metadata: {
-        isrc: [FALLBACK],
+        isrc: [],
         upc: FALLBACK,
         rights: FALLBACK,
         publisher: FALLBACK,
