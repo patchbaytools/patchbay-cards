@@ -34,19 +34,29 @@ export type ContractingInfo = {
   care_of: string | null;
 };
 
+export type ContactInfo = {
+  representation_contact_email: string | null;
+  legal_contact_email: string | null;
+};
+
 export type CardData = {
   book_number: string | null;
   name: string | null;
   profile_image_url: string | null;
+  featured_social_link: string | null;
+  location: string | null;
   url_instagram: string | null;
   url_twitter: string | null;
   url_website: string | null;
   url_spotify: string | null;
+  url_youtube: string | null;
+  url_tiktok: string | null;
   bio: string | null;
   songwriter_details: CardSongwriterDetails | null;
   config: Config;
   pub_line: string | null;
   contracting_info: ContractingInfo | null;
+  contact_info: ContactInfo | null;
   artist_projects: string[] | null;
   roles: string[] | null; // e.g., ["Songwriter", "Producer", ...]
 };

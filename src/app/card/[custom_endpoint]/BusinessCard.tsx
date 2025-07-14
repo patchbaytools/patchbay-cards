@@ -179,60 +179,86 @@ export default function BusinessCard({
                       Instagram ↗
                     </motion.span>
                   )}
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className='text-[19px] leading-[19px] font-medium hover:underline'
-                    style={{
-                      fontFamily: "var(--font-neue-haas-unica)",
-                      color: "#EDEEF0",
-                      padding: "0px",
-                      margin: "0px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => {
-                    //   window.open(data?.url_instagram, "_blank");
-                    // }}
-                  >
-                    Tiktok ↗
-                  </motion.span>
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className='text-[19px] leading-[19px] font-medium hover:underline'
-                    style={{
-                      fontFamily: "var(--font-neue-haas-unica)",
-                      color: "#EDEEF0",
-                      padding: "0px",
-                      margin: "0px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => {
-                    //   window.open(data?.url_instagram, "_blank");
-                    // }}
-                  >
-                    YouTube ↗
-                  </motion.span>
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className='text-[19px] leading-[19px] font-medium hover:underline'
-                    style={{
-                      fontFamily: "var(--font-neue-haas-unica)",
-                      color: "#EDEEF0",
-                      padding: "0px",
-                      margin: "0px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => {
-                    //   window.open(data?.url_instagram, "_blank");
-                    // }}
-                  >
-                    X ↗
-                  </motion.span>
+                  {data?.url_tiktok && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className='text-[19px] leading-[19px] font-medium hover:underline'
+                      style={{
+                        fontFamily: "var(--font-neue-haas-unica)",
+                        color: "#EDEEF0",
+                        padding: "0px",
+                        margin: "0px",
+                        cursor: "pointer",
+                      }}
+                      // onClick={() => {
+                      //   window.open(data?.url_instagram, "_blank");
+                      // }}
+                    >
+                      Tiktok ↗
+                    </motion.span>
+                  )}
+                  {data?.url_youtube && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className='text-[19px] leading-[19px] font-medium hover:underline'
+                      style={{
+                        fontFamily: "var(--font-neue-haas-unica)",
+                        color: "#EDEEF0",
+                        padding: "0px",
+                        margin: "0px",
+                        cursor: "pointer",
+                      }}
+                      // onClick={() => {
+                      //   window.open(data?.url_instagram, "_blank");
+                      // }}
+                    >
+                      YouTube ↗
+                    </motion.span>
+                  )}
+                  {data?.url_twitter && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className='text-[19px] leading-[19px] font-medium hover:underline'
+                      style={{
+                        fontFamily: "var(--font-neue-haas-unica)",
+                        color: "#EDEEF0",
+                        padding: "0px",
+                        margin: "0px",
+                        cursor: "pointer",
+                      }}
+                      // onClick={() => {
+                      //   window.open(data?.url_instagram, "_blank");
+                      // }}
+                    >
+                      X ↗
+                    </motion.span>
+                  )}
+                  {data?.url_website && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className='text-[19px] leading-[19px] font-medium hover:underline'
+                      style={{
+                        fontFamily: "var(--font-neue-haas-unica)",
+                        color: "#EDEEF0",
+                        padding: "0px",
+                        margin: "0px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        window.open(data?.url_website, "_blank");
+                      }}
+                    >
+                      Website ↗
+                    </motion.span>
+                  )}
                 </motion.div>
               )}
             </div>

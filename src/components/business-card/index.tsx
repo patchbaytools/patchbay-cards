@@ -22,17 +22,6 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
     ? "@" + instagramChunks[instagramChunks.length - 1]
     : undefined;
 
-  const city = data?.contracting_info?.address?.city;
-  const stateOrCountry = data?.contracting_info?.address?.country
-    ? getCode(data?.contracting_info?.address?.country) === "US"
-      ? getCode(data?.contracting_info?.address?.country)
-      : states.find(
-          (state) =>
-            state.name.toLowerCase() ===
-            data?.contracting_info?.address?.state?.toLowerCase()
-        )?.abbreviation
-    : undefined;
-
   return (
     <Card
       shineStrength={0.1}
@@ -73,7 +62,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
             <Skeleton.Input active size='small' />
           )}
         </span>
-        {data?.contracting_info ? (
+        {data?.location ? (
           <span className='flex flex-row  gap-[7px]'>
             <Image
               src='/images/LocationIcon.svg'
@@ -81,7 +70,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
               width={7.894}
               height={9.947}
             />
-            <span>{`${city}, ${stateOrCountry}`}</span>
+            <span>{`#${data?.location}`}</span>
           </span>
         ) : (
           <Skeleton.Input active size='small' />
@@ -119,7 +108,10 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
               </div>
             ))}
           </div>
-          <div className='relative w-[68px] h-[68px]  overflow-hidden'>
+          <div
+            className='relative w-[68px] h-[68px]  overflow-hidden rounded-[2px] border-[.2px] border-[#EDEEF0];
+'
+          >
             <Image
               src={data?.profile_image_url || "/images/favicon.ico"}
               alt={data?.name ?? "Avatar Photo"}
