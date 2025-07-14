@@ -62,8 +62,12 @@ body {
     Helvetica,
     Arial,
     sans-serif;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background:
+    url("/images/blurrybackgroundphoto.jpg") center center / cover no-repeat,
+    hsl(var(--background));
+  color: #edeef0;
+
+  /* color: hsl(var(--foreground)); */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

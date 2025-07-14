@@ -1,82 +1,74 @@
 import "server-only";
 
+export type CardSongwriterDetails = {
+  songwriter_name: string | null;
+  songwriter_PRO: string | null;
+  songwriter_IPI: string | null;
+};
+
+export type Config = {
+  custom_endpoint: string | null;
+  enabled: boolean;
+  show_contracting_info: boolean;
+  show_studio_details: boolean;
+  show_pub_line: boolean;
+  show_bio: boolean;
+  show_artist_projects: boolean;
+  show_songwriter_details: boolean;
+  // Add more fields if needed
+};
+
+export type Address = {
+  name: string;
+  address_line_1: string | null;
+  address_line_2: string | null;
+  city: string | null;
+  state: string | null;
+  postal_code: string | null;
+  country: string | null;
+};
+
+export type ContractingInfo = {
+  book_number: string;
+  address: Address;
+  care_of: string | null;
+};
+
 export type CardData = {
-  id: string | undefined;
-  name: string | undefined;
-  title: string | undefined;
-  subtitle: string | undefined;
-  email: string | undefined;
-  phone: string | undefined;
-  location: string | undefined;
-  image: string | undefined;
-  contractingInfo: string[] | undefined;
-  pubLine: string[] | undefined;
-  metadata: {
-    isrc: string[] | undefined;
-    upc: string | undefined;
-    rights: string | undefined;
-    publisher: string | undefined;
-  };
+  book_number: string | null;
+  name: string | null;
+  profile_image_url: string | null;
+  url_instagram: string | null;
+  url_twitter: string | null;
+  url_website: string | null;
+  url_spotify: string | null;
+  bio: string | null;
+  songwriter_details: CardSongwriterDetails | null;
+  config: Config;
+  pub_line: string | null;
+  contracting_info: ContractingInfo | null;
+  artist_projects: string[] | null;
+  roles: string[] | null; // e.g., ["Songwriter", "Producer", ...]
 };
 
 const FALLBACK = undefined;
 
-export async function getCardData(custom_endpoint: string): Promise<CardData> {
+export async function getCardData(
+  custom_endpoint: string
+): Promise<CardData | null> {
   try {
     const url = `${process.env.NEXT_PATCHBAY_API_URL}/api/v1/cards/public/${custom_endpoint}`;
-
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error(`Not found - Status: ${res.status}`);
+      return null;
+      // throw new Error(`Not found - Status: ${res.status}`);
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as CardData;
 
-    return {
-      id: data?.id ?? custom_endpoint ?? FALLBACK,
-      name: data?.name ?? FALLBACK,
-      title: data?.title ?? FALLBACK,
-      subtitle: data?.subtitle ?? FALLBACK,
-      email: data?.email ?? FALLBACK,
-      phone: data?.phone ?? FALLBACK,
-      location: data?.location ?? FALLBACK,
-      image: data?.image ?? FALLBACK,
-      contractingInfo:
-        Array.isArray(data?.contractingInfo) && data.contractingInfo.length > 0
-          ? data.contractingInfo
-          : [FALLBACK],
-      pubLine:
-        Array.isArray(data?.pubLine) && data.pubLine.length > 0
-          ? data.pubLine
-          : [FALLBACK],
-      metadata: {
-        isrc:
-          Array.isArray(data?.metadata?.isrc) && data.metadata.isrc.length > 0
-            ? data.metadata.isrc
-            : [FALLBACK],
-        upc: data?.metadata?.upc ?? FALLBACK,
-        rights: data?.metadata?.rights ?? FALLBACK,
-        publisher: data?.metadata?.publisher ?? FALLBACK,
-      },
-    };
+    return data;
   } catch (error) {
-    return {
-      id: FALLBACK,
-      name: FALLBACK,
-      title: FALLBACK,
-      subtitle: FALLBACK,
-      email: FALLBACK,
-      phone: FALLBACK,
-      location: FALLBACK,
-      image: FALLBACK,
-      contractingInfo: [],
-      pubLine: [],
-      metadata: {
-        isrc: [],
-        upc: FALLBACK,
-        rights: FALLBACK,
-        publisher: FALLBACK,
-      },
-    };
+    console.error("Error fetching card data:", error);
+    throw error;
   }
 }

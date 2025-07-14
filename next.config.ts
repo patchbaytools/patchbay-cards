@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   env: {
     PORT: process.env.PORT || "3001",
   },
+  // Configure external image domains for Next.js Image component
+  images: {
+    domains: ["i.scdn.co"], // Allow Spotify CDN images
+  },
 };
 
 export default nextConfig;

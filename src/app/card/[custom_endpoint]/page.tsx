@@ -1,6 +1,7 @@
 // ** Custom Components, Hooks, Utils, etc.
 import BusinessCard from "@/app/card/[custom_endpoint]/BusinessCard";
 import { getCardData } from "@/lib/getCardData";
+import { Button } from "antd";
 
 // Test if this file is being loaded
 
@@ -12,8 +13,7 @@ export default async function Page({
   const resolvedParams = await params;
   const data = await getCardData(resolvedParams.custom_endpoint);
   return (
-    <div>
-      <h1>DEBUG: Route working! ID: {resolvedParams.custom_endpoint}</h1>
+    <div className='p-[30px] w-full h-full'>
       <BusinessCard data={data} id={resolvedParams.custom_endpoint} />
     </div>
   );

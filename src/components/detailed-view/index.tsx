@@ -2,22 +2,9 @@
 
 // ** Motion Imports
 import { motion } from "motion/react";
+import type { CardData } from "@/lib/getCardData";
 
-type CardData = {
-  name?: string;
-  title?: string;
-  subtitle?: string;
-  contractingInfo?: string[];
-  pubLine?: string[];
-  metadata?: {
-    isrc?: string[];
-    upc?: string;
-    rights?: string;
-    publisher?: string;
-  };
-};
-
-export default function DetailedView({ data }: { data?: CardData }) {
+export default function DetailedView({ data }: { data?: CardData | null }) {
   if (!data) return null;
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -50,7 +37,7 @@ export default function DetailedView({ data }: { data?: CardData }) {
             {data.name || "Paul McCartney"}
           </h1>
           <p className='text-xl mb-8 text-gray-700 dark:text-gray-300'>
-            {data.title || "Artist, Producer, Songwriter • BMI"}
+            {data.roles?.join(", ") || "Artist, Producer, Songwriter • BMI"}
           </p>
         </motion.div>
         <div className='grid md:grid-cols-2 gap-12 mb-12'>
@@ -62,14 +49,23 @@ export default function DetailedView({ data }: { data?: CardData }) {
               CONTRACTING INFO
             </h2>
             <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.contractingInfo) &&
-              data.contractingInfo.length > 0 ? (
-                data.contractingInfo.map((line, i) => <p key={i}>{line}</p>)
+              {data.contracting_info ? (
+                <>
+                  <p>{data.name}</p>
+                  <p>{data.contracting_info.address.address_line_1}</p>
+                  {data.contracting_info.address.address_line_2 && (
+                    <p>{data.contracting_info.address.address_line_2}</p>
+                  )}
+                  <p>
+                    {data.contracting_info.address.city},{" "}
+                    {data.contracting_info.address.state}{" "}
+                    {data.contracting_info.address.postal_code}
+                  </p>
+                  <p>{data.contracting_info.address.country}</p>
+                </>
               ) : (
                 <>
-                  <p>Paul McCartney (fso James Paul McCartney)</p>
-                  <p>10 Downing St.</p>
-                  <p>London, UK SW1A2AA</p>
+                  <p>No contracting information available</p>
                 </>
               )}
             </div>
@@ -79,16 +75,18 @@ export default function DetailedView({ data }: { data?: CardData }) {
             variants={cardVariants}
           >
             <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              PUB LINE
+              SONGWRITER DETAILS
             </h2>
             <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.pubLine) && data.pubLine.length > 0 ? (
-                data.pubLine.map((line, i) => <p key={i}>{line}</p>)
+              {data.songwriter_details ? (
+                <>
+                  <p>Name: {data.songwriter_details.songwriter_name}</p>
+                  <p>PRO: {data.songwriter_details.songwriter_PRO}</p>
+                  <p>IPI: {data.songwriter_details.songwriter_IPI}</p>
+                </>
               ) : (
                 <>
-                  <p>James Paul McCartney</p>
-                  <p>BMI</p>
-                  <p>IPI 12345678909</p>
+                  <p>No songwriter details available</p>
                 </>
               )}
             </div>
@@ -99,55 +97,70 @@ export default function DetailedView({ data }: { data?: CardData }) {
           variants={cardVariants}
         >
           <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-            ADDITIONAL METADATA
+            SOCIAL LINKS
           </h2>
           <div className='grid md:grid-cols-2 gap-4'>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                ISRC Codes
-              </h3>
-              <ul className='list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300'>
-                {Array.isArray(data.metadata?.isrc) &&
-                data.metadata?.isrc.length > 0 ? (
-                  data.metadata.isrc.map((code, i) => <li key={i}>{code}</li>)
-                ) : (
-                  <>
-                    <li>USRC12345678</li>
-                    <li>GBRC98765432</li>
-                  </>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                UPC/EAN
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.upc || "602567924128"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Performing Rights
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.rights || "BMI"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Publisher
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.publisher || "MPL Communications"}
-              </p>
-            </div>
+            {data.url_instagram && (
+              <div>
+                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
+                  Instagram
+                </h3>
+                <a
+                  href={data.url_instagram}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
+                >
+                  {data.url_instagram}
+                </a>
+              </div>
+            )}
+            {data.url_twitter && (
+              <div>
+                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
+                  Twitter
+                </h3>
+                <a
+                  href={data.url_twitter}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
+                >
+                  {data.url_twitter}
+                </a>
+              </div>
+            )}
+            {data.url_website && (
+              <div>
+                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
+                  Website
+                </h3>
+                <a
+                  href={data.url_website}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
+                >
+                  {data.url_website}
+                </a>
+              </div>
+            )}
+            {data.url_spotify && (
+              <div>
+                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
+                  Spotify
+                </h3>
+                <a
+                  href={data.url_spotify}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
+                >
+                  {data.url_spotify}
+                </a>
+              </div>
+            )}
           </div>
-        </motion.div>
-        <motion.div className='text-center' variants={cardVariants}>
-          <button className='bg-black dark:bg-gray-700 text-white px-6 py-3 rounded-md hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors'>
-            Download Full Metadata
-          </button>
         </motion.div>
       </motion.div>
     </div>

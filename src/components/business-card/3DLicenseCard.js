@@ -153,7 +153,6 @@ export default class ParallaxCard extends React.Component {
               },
             })
           )}
-        ;
       </div>
     );
   };
