@@ -34,104 +34,102 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
     : undefined;
 
   return (
-    <>
-      <Card
-        shineStrength={0.1}
-        borderRadius='9px'
+    <Card
+      shineStrength={0.1}
+      borderRadius='9px'
+      style={{
+        width: "473px",
+        height: "255px",
+        borderRadius: "9px",
+        padding: "18px 23px",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        backdropFilter: "blur(25px)",
+        display: "flex",
+        transition: "background-image 0.4s ease-in-out",
+        position: "relative",
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/CardTexture.png')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <header
+        className='w-full h-[18px] flex flex-row space-evenly text-white font-[var(--font-neue-haas)] '
         style={{
-          width: "473px",
-          height: "255px",
-          borderRadius: "9px",
-          padding: "18px 23px",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          backdropFilter: "blur(25px)",
+          color: "white",
+          fontSize: "12px",
+          fontWeight: "500",
           display: "flex",
-          transition: "background-image 0.4s ease-in-out",
-          position: "relative",
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/CardTexture.png')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontFamily: "var(--font-neue-haas)",
+          userSelect: "none",
         }}
       >
-        <header
-          className='w-full h-[18px] flex flex-row space-evenly text-white font-[var(--font-neue-haas)] '
-          style={{
-            color: "white",
-            fontSize: "12px",
-            fontWeight: "500",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontFamily: "var(--font-neue-haas)",
-            userSelect: "none",
-          }}
-        >
-          <span>
-            {data?.songwriter_details?.songwriter_name ?? (
-              <Skeleton.Input active size='small' />
-            )}
-          </span>
-          {data?.contracting_info ? (
-            <span className='flex flex-row  gap-[7px]'>
-              <Image
-                src='/images/LocationIcon.svg'
-                alt='Instagram'
-                width={7.894}
-                height={9.947}
-              />
-              <span>{`${city}, ${stateOrCountry}`}</span>
-            </span>
-          ) : (
+        <span>
+          {data?.songwriter_details?.songwriter_name ?? (
             <Skeleton.Input active size='small' />
           )}
-          {data?.url_instagram ? (
-            <span className='flex flex-row  gap-[7px]'>
-              <Image
-                src='/images/InstagramIcon.svg'
-                alt='Instagram'
-                width={10}
-                height={10}
-              />
+        </span>
+        {data?.contracting_info ? (
+          <span className='flex flex-row  gap-[7px]'>
+            <Image
+              src='/images/LocationIcon.svg'
+              alt='Instagram'
+              width={7.894}
+              height={9.947}
+            />
+            <span>{`${city}, ${stateOrCountry}`}</span>
+          </span>
+        ) : (
+          <Skeleton.Input active size='small' />
+        )}
+        {data?.url_instagram ? (
+          <span className='flex flex-row  gap-[7px]'>
+            <Image
+              src='/images/InstagramIcon.svg'
+              alt='Instagram'
+              width={10}
+              height={10}
+            />
 
-              {instagramUsername}
-            </span>
-          ) : (
-            <span className='w-[65px] h-[10px] bg-white'></span>
-          )}
-        </header>
-        <section
-          className='h-full w-full flex flex-row justify-between space-between items-end font-[var(--font-neue-haas)]'
-          style={{ color: "white" }}
-        >
-          <h1 className='text-[50px] whitespace-break-spaces leading-[115%]'>
-            {data?.name}
-          </h1>
-          <div className='flex flex-col h-full w-full justify-end items-end gap-[9px] '>
-            <div className='flex flex-col items-end'>
-              {data?.roles?.map((role) => (
-                <div
-                  className='font-[var(--font-neue-haas)] tracking-[.12px] leading-[150%] text-[12px]'
-                  key={role}
-                >
-                  {role}
-                </div>
-              ))}
-            </div>
-            <div className='relative w-[68px] h-[68px]  overflow-hidden'>
-              <Image
-                src={data?.profile_image_url || "/images/favicon.ico"}
-                alt={data?.name ?? "Avatar Photo"}
-                fill
-                className='object-cover'
-              />
-            </div>
+            {instagramUsername}
+          </span>
+        ) : (
+          <span className='w-[65px] h-[10px] bg-white'></span>
+        )}
+      </header>
+      <section
+        className='select-none h-full w-full flex flex-row justify-between space-between items-end font-[var(--font-neue-haas)]'
+        style={{ color: "white" }}
+      >
+        <h1 className='text-[50px] whitespace-break-spaces leading-[115%]'>
+          {data?.name}
+        </h1>
+        <div className='flex flex-col h-full w-full justify-end items-end gap-[9px] '>
+          <div className='flex flex-col items-end'>
+            {data?.roles?.map((role) => (
+              <div
+                className='font-[var(--font-neue-haas)] tracking-[.12px] leading-[150%] text-[12px]'
+                key={role}
+              >
+                {role}
+              </div>
+            ))}
           </div>
-        </section>
-      </Card>
-    </>
+          <div className='relative w-[68px] h-[68px]  overflow-hidden'>
+            <Image
+              src={data?.profile_image_url || "/images/favicon.ico"}
+              alt={data?.name ?? "Avatar Photo"}
+              fill
+              className='object-cover'
+            />
+          </div>
+        </div>
+      </section>
+    </Card>
   );
 };
 

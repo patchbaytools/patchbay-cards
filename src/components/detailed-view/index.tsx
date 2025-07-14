@@ -2,45 +2,131 @@
 
 // ** Motion Imports
 import { motion } from "motion/react";
+import { Skeleton, Input, Tooltip } from "antd";
+
+const { TextArea } = Input;
+
 import type { CardData } from "@/lib/getCardData";
 
 export default function DetailedView({ data }: { data?: CardData | null }) {
   if (!data) return null;
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
+        duration: 0.5,
       },
     },
   };
   return (
-    <div className='container mx-auto px-4 py-16'>
+    <div className='container mx-auto px-[33px] py-16'>
       <motion.div
-        className='max-w-3xl mx-auto'
+        className='grid grid-cols-2'
         initial='hidden'
         whileInView='visible'
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         variants={containerVariants}
       >
-        <motion.div variants={cardVariants}>
-          <h1 className='text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100'>
-            {data.name || "Paul McCartney"}
-          </h1>
-          <p className='text-xl mb-8 text-gray-700 dark:text-gray-300'>
-            {data.roles?.join(", ") || "Artist, Producer, Songwriter • BMI"}
-          </p>
-        </motion.div>
-        <div className='grid md:grid-cols-2 gap-12 mb-12'>
+        <div></div>
+        <section className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'>
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className='w-full  gap-[16px] flex flex-col justify-start items-start'
+          >
+            <h1
+              className='text-[19px]'
+              style={{ fontFamily: "var(--font-inconsolata)" }}
+            >
+              [BIO]
+            </h1>
+            {data.bio ? (
+              <Tooltip color='blue' title='Click to copy' placement='top'>
+                <span
+                  className='text-[18px] text-ellipsis overflow-y-auto hide-scrollbar cursor-copy hover:underline '
+                  onClick={() => {
+                    console.log("clicked");
+                  }}
+                  style={{
+                    fontFamily: "var(--font-neue-haas)",
+                    lineHeight: "150%",
+                    fontSize: "18px",
+                    height: "189px",
+                    color: "#EDEEF0",
+                  }}
+                >
+                  {data.bio}
+                </span>
+              </Tooltip>
+            ) : (
+              <Skeleton paragraph={{ rows: 6 }} />
+            )}
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className='w-full  gap-[16px] flex flex-col justify-start items-start'
+          >
+            <h1
+              className='text-[24px]'
+              style={{ fontFamily: "var(--font-inconsolata)" }}
+            >
+              [SONGWRITER INFO]
+            </h1>
+            {data.songwriter_details ? (
+              <section
+                className='w-full flex flex-row justify-between items-start '
+                style={{ fontFamily: "var(--font-neue-haas)" }}
+              >
+                <div className='flex flex-col '>
+                  <span className='text-[18px] hover:underline cursor-copy'>
+                    {data.songwriter_details.songwriter_name}
+                  </span>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    Legal Name
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <span className='text-[18px] hover:underline cursor-copy'>
+                    {data.songwriter_details.songwriter_IPI}
+                  </span>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    IPI
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <span className='text-[18px] hover:underline cursor-copy'>
+                    {data.songwriter_details.songwriter_PRO}
+                  </span>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    PRO
+                  </span>
+                </div>
+              </section>
+            ) : (
+              <Skeleton style={{ color: "pink" }} paragraph={{ rows: 3 }} />
+            )}
+          </motion.div>
+        </section>
+
+        {/* <div className='grid md:grid-cols-2 gap-12 mb-12'>
           <motion.div
             className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
             variants={cardVariants}
@@ -161,7 +247,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
               </div>
             )}
           </div>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </div>
   );

@@ -32,7 +32,7 @@ export default function BusinessCard({
 
   if (!data) {
     return (
-      <div className='h-[calc(100vh-56px)] w-full flex justify-center items-center'>
+      <div className='h-[calc(100vh-56px)]  w-full flex justify-center items-center'>
         No Patchbay Card found
       </div>
     );
@@ -50,7 +50,7 @@ export default function BusinessCard({
               Try Patchbay Free
             </Button>
           </div>
-          <div className='flex flex-row justify-between items-start gap-[27px]'>
+          <div className='flex flex-row justify-between items-start gap-[27px] select-none'>
             <div
               className='flex flex-col justify-start items-end gap-[30px]'
               onMouseEnter={() => setContactOpen(true)}
@@ -87,7 +87,10 @@ export default function BusinessCard({
                   }}
                   className='flex flex-col justify-start items-end w-full gap-[16px]'
                 >
-                  <span
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     className='text-[19px] leading-[19px] font-medium hover:underline'
                     style={{
                       fontFamily: "var(--font-neue-haas-unica)",
@@ -101,8 +104,12 @@ export default function BusinessCard({
                     // }}
                   >
                     Representation ↗
-                  </span>
-                  <span
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    exit={{ opacity: 0 }}
                     className='text-[19px] leading-[19px] font-medium hover:underline'
                     style={{
                       fontFamily: "var(--font-neue-haas-unica)",
@@ -116,7 +123,7 @@ export default function BusinessCard({
                     // }}
                   >
                     Legal ↗
-                  </span>
+                  </motion.span>
                 </motion.div>
               )}
             </div>
@@ -153,7 +160,10 @@ export default function BusinessCard({
                   className='flex flex-col justify-start items-end w-full gap-[16px]'
                 >
                   {data?.url_instagram && (
-                    <span
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
                       className='text-[19px] leading-[19px] font-medium hover:underline'
                       style={{
                         fontFamily: "var(--font-neue-haas-unica)",
@@ -167,9 +177,12 @@ export default function BusinessCard({
                       }}
                     >
                       Instagram ↗
-                    </span>
+                    </motion.span>
                   )}
-                  <span
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     className='text-[19px] leading-[19px] font-medium hover:underline'
                     style={{
                       fontFamily: "var(--font-neue-haas-unica)",
@@ -183,8 +196,11 @@ export default function BusinessCard({
                     // }}
                   >
                     Tiktok ↗
-                  </span>
-                  <span
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     className='text-[19px] leading-[19px] font-medium hover:underline'
                     style={{
                       fontFamily: "var(--font-neue-haas-unica)",
@@ -198,8 +214,11 @@ export default function BusinessCard({
                     // }}
                   >
                     YouTube ↗
-                  </span>
-                  <span
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     className='text-[19px] leading-[19px] font-medium hover:underline'
                     style={{
                       fontFamily: "var(--font-neue-haas-unica)",
@@ -213,7 +232,7 @@ export default function BusinessCard({
                     // }}
                   >
                     X ↗
-                  </span>
+                  </motion.span>
                 </motion.div>
               )}
             </div>
@@ -226,7 +245,7 @@ export default function BusinessCard({
         <div></div>
         <div className='absolute top-[175px] w-full flex flex-col items-center justify-center max-w-md h-64 md:h-96 z-10'>
           <CardTemplate data={data ?? undefined} />
-          <div className='mt-[100px] rotate-90 text-[50px] var(--font-DM_Mono)'>
+          <div className='mt-[100px] select-none rotate-90 text-[50px] var(--font-DM_Mono)'>
             →
           </div>
         </div>
@@ -246,9 +265,6 @@ export default function BusinessCard({
       <section className='min-h-screen w-full bg-gray-50 dark:bg-gray-900 snap-start'>
         <DetailedView data={data} />
       </section>
-      <div className='w-full text-center py-4 text-gray-500 text-xs'>
-        ID: {id}
-      </div>
     </div>
   );
 }
