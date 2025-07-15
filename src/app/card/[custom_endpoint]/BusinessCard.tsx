@@ -45,7 +45,12 @@ export default function BusinessCard({
       className='h-screen overflow-auto snap-y snap-mandatory hide-scrollbar'
     >
       <section className='h-screen w-full p-[30px] relative snap-start flex flex-col justify-between items-center'>
-        <header className=' w-full flex flex-row justify-between items-start mb-[-36px] z-500'>
+        <motion.header
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className=' w-full flex flex-row justify-between items-start mb-[-36px] z-500'
+        >
           <div className='flex flex-row justify-between items-start gap-[27px] select-all h-[36px]'>
             <Image
               onClick={() => {
@@ -62,88 +67,12 @@ export default function BusinessCard({
                 window.open("https://patchbay.xyz", "_blank");
               }}
               type='primary'
-              className='bg-[#EDEEF0] text-[#000000]'
+              className='bg-[#EDEEF0] text-[#000000] hover:bg-black'
             >
               Try Patchbay Free
             </Button>
           </div>
           <div className='flex flex-row justify-between items-start gap-[27px] select-none'>
-            <div
-              className='flex flex-col justify-start items-end gap-[30px]'
-              onMouseEnter={() => setContactOpen(true)}
-              onMouseLeave={() => setContactOpen(false)}
-            >
-              <Button
-                className='text-[24px]'
-                type='text'
-                style={{
-                  fontFamily: "var(--font-inconsolata)",
-                  color: "#EDEEF0",
-                  padding: "0px",
-                }}
-              >
-                [CONTACT]
-              </Button>
-              {contactOpen && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    height: 25,
-                    overflow: "hidden",
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    height: 200,
-                    overflow: "auto",
-                  }}
-                  exit={{ opacity: 0, y: 100, height: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  className='flex flex-col justify-start items-end w-full gap-[16px]'
-                >
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className='text-[19px] leading-[19px] font-medium hover:underline'
-                    style={{
-                      fontFamily: "var(--font-neue-haas-unica)",
-                      color: "#EDEEF0",
-                      padding: "0px",
-                      margin: "0px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => {
-                    //   window.open(data?.url_instagram, "_blank");
-                    // }}
-                  >
-                    Representation ↗
-                  </motion.span>
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    exit={{ opacity: 0 }}
-                    className='text-[19px] leading-[19px] font-medium hover:underline'
-                    style={{
-                      fontFamily: "var(--font-neue-haas-unica)",
-                      color: "#EDEEF0",
-                      padding: "0px",
-                      margin: "0px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => {
-                    //   window.open(data?.url_instagram, "_blank");
-                    // }}
-                  >
-                    Legal ↗
-                  </motion.span>
-                </motion.div>
-              )}
-            </div>
             <div
               onMouseEnter={() => setSocialsOpen(true)}
               onMouseLeave={() => setSocialsOpen(false)}
@@ -229,9 +158,6 @@ export default function BusinessCard({
                         margin: "0px",
                         cursor: "pointer",
                       }}
-                      // onClick={() => {
-                      //   window.open(data?.url_instagram, "_blank");
-                      // }}
                     >
                       YouTube ↗
                     </motion.span>
@@ -249,9 +175,6 @@ export default function BusinessCard({
                         margin: "0px",
                         cursor: "pointer",
                       }}
-                      // onClick={() => {
-                      //   window.open(data?.url_instagram, "_blank");
-                      // }}
                     >
                       X ↗
                     </motion.span>
@@ -280,18 +203,19 @@ export default function BusinessCard({
               )}
             </div>
           </div>
-        </header>
+        </motion.header>
         <motion.div
           className='absolute  inset-0 bg-gradient-to-b from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
           style={{ y: yTransform }}
         />
-        <div></div>
-        <div className='absolute top-[175px] w-full flex flex-col items-center justify-center max-w-md h-64 md:h-96 z-10'>
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 1 }}
+          className='absolute  top-[calc(50%-50px)] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full flex flex-col items-center justify-center max-w-md h-64 md:h-96 z-10'
+        >
           <CardTemplate data={data ?? undefined} />
-          <div className='mt-[100px] select-none rotate-90 text-[50px] var(--font-DM_Mono)'>
-            →
-          </div>
-        </div>
+        </motion.div>
         <motion.div
           className='relative mb-[18px] z-20'
           initial={{ opacity: 0 }}
@@ -304,6 +228,9 @@ export default function BusinessCard({
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
           ></motion.div>
         </motion.div>
+        <div className='absolute  bottom-[50px]   select-none rotate-90 text-[50px] var(--font-DM_Mono)'>
+          →
+        </div>
       </section>
       <section className='h-screen p-[30px] w-full bg-gray-50 dark:bg-gray-900 snap-start'>
         <DetailedView data={data} />

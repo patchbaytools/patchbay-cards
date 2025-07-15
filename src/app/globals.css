@@ -52,6 +52,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.ant-btn-primary:hover {
+  background-color: white !important;
+  color: #000000 !important;
+}
+
 body {
   font-family:
     var(--font-inter),
