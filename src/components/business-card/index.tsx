@@ -70,7 +70,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
               width={7.894}
               height={9.947}
             />
-            <span>{`#${data?.location}`}</span>
+            <span>{`${data?.location}`}</span>
           </span>
         ) : (
           <Skeleton.Input active size='small' />

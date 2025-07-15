@@ -2,6 +2,7 @@
 
 // ** React/Next.js Imports
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { Button } from "antd";
 
 // ** Motion Imports
@@ -43,10 +44,26 @@ export default function BusinessCard({
       ref={containerRef}
       className='h-screen overflow-auto snap-y snap-mandatory hide-scrollbar'
     >
-      <section className='h-screen w-full relative snap-start flex flex-col justify-between items-center'>
+      <section className='h-screen w-full p-[30px] relative snap-start flex flex-col justify-between items-center'>
         <header className=' w-full flex flex-row justify-between items-start mb-[-36px] z-500'>
-          <div className='flex flex-row justify-between items-center gap-[27px] select-all h-[36px]'>
-            <Button type='primary' className='bg-[#EDEEF0] text-[#000000]'>
+          <div className='flex flex-row justify-between items-start gap-[27px] select-all h-[36px]'>
+            <Image
+              onClick={() => {
+                window.open("https://patchbay.xyz", "_blank");
+              }}
+              className='cursor-pointer'
+              src='/images/LogoWhite.svg'
+              alt='Patchbay Logo'
+              width={29.6}
+              height={32}
+            />
+            <Button
+              onClick={() => {
+                window.open("https://patchbay.xyz", "_blank");
+              }}
+              type='primary'
+              className='bg-[#EDEEF0] text-[#000000]'
+            >
               Try Patchbay Free
             </Button>
           </div>
@@ -288,7 +305,7 @@ export default function BusinessCard({
           ></motion.div>
         </motion.div>
       </section>
-      <section className='min-h-screen w-full bg-gray-50 dark:bg-gray-900 snap-start'>
+      <section className='h-screen p-[30px] w-full bg-gray-50 dark:bg-gray-900 snap-start'>
         <DetailedView data={data} />
       </section>
     </div>

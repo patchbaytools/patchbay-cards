@@ -13,7 +13,7 @@ export default async function Page({
   const resolvedParams = await params;
   const data = await getCardData(resolvedParams.custom_endpoint);
   return (
-    <div className='p-[30px] w-full h-full'>
+    <div className='w-full h-full'>
       <BusinessCard data={data} id={resolvedParams.custom_endpoint} />
     </div>
   );

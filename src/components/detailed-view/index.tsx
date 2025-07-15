@@ -22,32 +22,82 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
     },
   };
   return (
-    <div className='container mx-auto px-[33px] py-16'>
+    <div className='container h-full mx-auto px-[33px]  text-[#EDEEF0]'>
       <motion.div
-        className='grid grid-cols-2'
+        className='grid grid-cols-2 gap-[100px] h-full'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true }}
         variants={containerVariants}
       >
-        <div></div>
         <section className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'>
-          <motion.div
-            initial={{ opacity: 0, x: 300 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className='w-full  gap-[16px] flex flex-col justify-start items-start'
-          >
-            <h1
-              className='text-[19px]'
-              style={{ fontFamily: "var(--font-inconsolata)" }}
+          {data.contact_info &&
+            (data.contact_info.representation_contact_email ||
+              data.contact_info.legal_contact_email) && (
+              <motion.div
+                initial={{ opacity: 0, x: 0 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className='w-full  gap-[16px] flex flex-col justify-start items-start'
+              >
+                <h1
+                  className='text-[24px] text-[#EDEEF0]'
+                  style={{ fontFamily: "var(--font-inconsolata)" }}
+                >
+                  [CONTACT]
+                </h1>
+                <section
+                  className='w-full flex flex-row justify-start items-start gap-[40px]'
+                  style={{ fontFamily: "var(--font-neue-haas)" }}
+                >
+                  {data.config.show_representation && (
+                    <div className='flex flex-col '>
+                      <span className='text-[18px] hover:underline cursor-copy'>
+                        {data.contact_info.representation_contact_email}
+                      </span>
+
+                      <span
+                        className='text-[18px] '
+                        style={{ color: "rgba(255, 255, 255, 0.50" }}
+                      >
+                        Representation
+                      </span>
+                    </div>
+                  )}
+                  {data.config.show_legal && (
+                    <div className='flex flex-col '>
+                      <span className='text-[18px] hover:underline cursor-copy'>
+                        {data.contact_info.legal_contact_email}
+                      </span>
+
+                      <span
+                        className='text-[18px] '
+                        style={{ color: "rgba(255, 255, 255, 0.50" }}
+                      >
+                        Legal
+                      </span>
+                    </div>
+                  )}
+                </section>
+              </motion.div>
+            )}
+          {data.bio && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full h-full  gap-[16px] flex flex-col justify-start items-start'
             >
-              [BIO]
-            </h1>
-            {data.bio ? (
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [BIO]
+              </h1>
+
               <Tooltip color='blue' title='Click to copy' placement='top'>
                 <span
-                  className='text-[18px] text-ellipsis overflow-y-auto hide-scrollbar cursor-copy hover:underline '
+                  className='text-[18px]  flex text-ellipsis overflow-y-scroll hide-scrollbar cursor-copy hover:underline '
                   onClick={() => {
                     console.log("clicked");
                   }}
@@ -55,30 +105,34 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                     fontFamily: "var(--font-neue-haas)",
                     lineHeight: "150%",
                     fontSize: "18px",
-                    height: "189px",
                     color: "#EDEEF0",
+                    height: `calc(100vh - ${data.config.show_representation ? 315 : 120}px)`,
                   }}
                 >
                   {data.bio}
                 </span>
               </Tooltip>
-            ) : (
-              <Skeleton paragraph={{ rows: 6 }} />
-            )}
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 300 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className='w-full  gap-[16px] flex flex-col justify-start items-start'
-          >
-            <h1
-              className='text-[24px]'
-              style={{ fontFamily: "var(--font-inconsolata)" }}
+            </motion.div>
+          )}
+        </section>
+        <section
+          className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'
+          style={{ fontFamily: "var(--font-neue-haas)" }}
+        >
+          {data.songwriter_details && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
             >
-              [SONGWRITER INFO]
-            </h1>
-            {data.songwriter_details ? (
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [SONGWRITER INFO]
+              </h1>
+
               <section
                 className='w-full flex flex-row justify-between items-start '
                 style={{ fontFamily: "var(--font-neue-haas)" }}
@@ -120,134 +174,67 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   </span>
                 </div>
               </section>
-            ) : (
-              <Skeleton style={{ color: "pink" }} paragraph={{ rows: 3 }} />
-            )}
-          </motion.div>
-        </section>
+            </motion.div>
+          )}
+          {data.config.show_pub_line && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [PUB LINE]
+              </h1>
 
-        {/* <div className='grid md:grid-cols-2 gap-12 mb-12'>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              CONTRACTING INFO
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {data.contracting_info ? (
-                <>
-                  <p>{data.name}</p>
-                  <p>{data.contracting_info.address.address_line_1}</p>
-                  {data.contracting_info.address.address_line_2 && (
-                    <p>{data.contracting_info.address.address_line_2}</p>
-                  )}
-                  <p>
-                    {data.contracting_info.address.city},{" "}
-                    {data.contracting_info.address.state}{" "}
-                    {data.contracting_info.address.postal_code}
-                  </p>
-                  <p>{data.contracting_info.address.country}</p>
-                </>
-              ) : (
-                <>
-                  <p>No contracting information available</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              SONGWRITER DETAILS
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {data.songwriter_details ? (
-                <>
-                  <p>Name: {data.songwriter_details.songwriter_name}</p>
-                  <p>PRO: {data.songwriter_details.songwriter_PRO}</p>
-                  <p>IPI: {data.songwriter_details.songwriter_IPI}</p>
-                </>
-              ) : (
-                <>
-                  <p>No songwriter details available</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </div>
-        <motion.div
-          className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-12'
-          variants={cardVariants}
-        >
-          <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-            SOCIAL LINKS
-          </h2>
-          <div className='grid md:grid-cols-2 gap-4'>
-            {data.url_instagram && (
-              <div>
-                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                  Instagram
-                </h3>
-                <a
-                  href={data.url_instagram}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
-                >
-                  {data.url_instagram}
-                </a>
-              </div>
-            )}
-            {data.url_twitter && (
-              <div>
-                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                  Twitter
-                </h3>
-                <a
-                  href={data.url_twitter}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
-                >
-                  {data.url_twitter}
-                </a>
-              </div>
-            )}
-            {data.url_website && (
-              <div>
-                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                  Website
-                </h3>
-                <a
-                  href={data.url_website}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
-                >
-                  {data.url_website}
-                </a>
-              </div>
-            )}
-            {data.url_spotify && (
-              <div>
-                <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                  Spotify
-                </h3>
-                <a
-                  href={data.url_spotify}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200'
-                >
-                  {data.url_spotify}
-                </a>
-              </div>
-            )}
-          </div>
-        </motion.div> */}
+              <span className='text-[18px] w-full hover:underline cursor-copy'>
+                {data.pub_line}
+              </span>
+            </motion.div>
+          )}
+          {data.config.show_contracting_info && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [CONTRACTING INFO]
+              </h1>
+
+              <section className='w-full flex flex-col justify-start items-start '>
+                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                  {data.contracting_info?.care_of}
+                </span>
+                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                  {data.contracting_info?.address.address_line_1}
+                </span>
+                {data.contracting_info?.address.address_line_2 && (
+                  <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                    {data.contracting_info?.address.address_line_2}
+                  </span>
+                )}
+
+                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                  {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
+                </span>
+
+                {data.contracting_info?.address.country && (
+                  <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                    {data.contracting_info?.address.country}
+                  </span>
+                )}
+              </section>
+            </motion.div>
+          )}
+        </section>
       </motion.div>
     </div>
   );

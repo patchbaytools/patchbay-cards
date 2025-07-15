@@ -15,6 +15,8 @@ export type Config = {
   show_bio: boolean;
   show_artist_projects: boolean;
   show_songwriter_details: boolean;
+  show_representation: boolean;
+  show_legal: boolean;
   // Add more fields if needed
 };
 
