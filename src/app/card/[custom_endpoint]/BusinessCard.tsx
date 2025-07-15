@@ -22,7 +22,6 @@ export default function BusinessCard({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [socialsOpen, setSocialsOpen] = useState<boolean>(false);
-  const [contactOpen, setContactOpen] = useState<boolean>(false);
   const { scrollYProgress } = useScroll({ container: containerRef });
   const smoothScrollProgress = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -138,9 +137,6 @@ export default function BusinessCard({
                         margin: "0px",
                         cursor: "pointer",
                       }}
-                      // onClick={() => {
-                      //   window.open(data?.url_instagram, "_blank");
-                      // }}
                     >
                       Tiktok ↗
                     </motion.span>
