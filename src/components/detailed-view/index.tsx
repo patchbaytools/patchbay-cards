@@ -2,9 +2,8 @@
 
 // ** Motion Imports
 import { motion } from "motion/react";
-import { Skeleton, Input, Tooltip } from "antd";
 
-const { TextArea } = Input;
+import { Tooltip } from "antd";
 
 import type { CardData } from "@/lib/getCardData";
 
@@ -52,7 +51,15 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 >
                   {data.config.show_representation && (
                     <div className='flex flex-col '>
-                      <span className='text-[18px] hover:underline cursor-copy'>
+                      <span
+                        className='text-[18px] hover:underline cursor-pointer'
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            data.contact_info?.representation_contact_email ||
+                              ""
+                          );
+                        }}
+                      >
                         {data.contact_info.representation_contact_email}
                       </span>
 
@@ -66,7 +73,14 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   )}
                   {data.config.show_legal && (
                     <div className='flex flex-col '>
-                      <span className='text-[18px] hover:underline cursor-copy'>
+                      <span
+                        className='text-[18px] hover:underline cursor-pointer'
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            data.contact_info?.legal_contact_email || ""
+                          );
+                        }}
+                      >
                         {data.contact_info.legal_contact_email}
                       </span>
 
@@ -97,9 +111,9 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
 
               <Tooltip color='blue' title='Click to copy' placement='top'>
                 <span
-                  className='text-[18px]  flex text-ellipsis overflow-y-scroll hide-scrollbar cursor-copy hover:underline '
+                  className='text-[18px]  flex text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline '
                   onClick={() => {
-                    console.log("clicked");
+                    navigator.clipboard.writeText(data?.bio || "");
                   }}
                   style={{
                     fontFamily: "var(--font-neue-haas)",
@@ -138,7 +152,14 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 style={{ fontFamily: "var(--font-neue-haas)" }}
               >
                 <div className='flex flex-col '>
-                  <span className='text-[18px] hover:underline cursor-copy'>
+                  <span
+                    className='text-[18px] hover:underline cursor-pointer'
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_name || ""
+                      );
+                    }}
+                  >
                     {data.songwriter_details.songwriter_name}
                   </span>
 
@@ -150,7 +171,14 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <span className='text-[18px] hover:underline cursor-copy'>
+                  <span
+                    className='text-[18px] hover:underline cursor-pointer'
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_IPI || ""
+                      );
+                    }}
+                  >
                     {data.songwriter_details.songwriter_IPI}
                   </span>
 
@@ -162,7 +190,14 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <span className='text-[18px] hover:underline cursor-copy'>
+                  <span
+                    className='text-[18px] hover:underline cursor-pointer'
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_PRO || ""
+                      );
+                    }}
+                  >
                     {data.songwriter_details.songwriter_PRO}
                   </span>
 
@@ -190,7 +225,12 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 [PUB LINE]
               </h1>
 
-              <span className='text-[18px] w-full hover:underline cursor-copy'>
+              <span
+                className='text-[18px] w-full hover:underline cursor-pointer'
+                onClick={() => {
+                  navigator.clipboard.writeText(data.pub_line || "");
+                }}
+              >
                 {data.pub_line}
               </span>
             </motion.div>
@@ -209,25 +249,45 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 [CONTRACTING INFO]
               </h1>
 
-              <section className='w-full flex flex-col justify-start items-start '>
-                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+              <section
+                className='w-full flex flex-col justify-start items-start hover:underline cursor-pointer'
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    (data.contracting_info?.care_of || "") +
+                      ", " +
+                      (data.contracting_info?.address.address_line_1 || "") +
+                      ", " +
+                      (data.contracting_info?.address.address_line_2
+                        ? data.contracting_info?.address.address_line_2 + ", "
+                        : "") +
+                      (data.contracting_info?.address.city || "") +
+                      ", " +
+                      (data.contracting_info?.address.state || "") +
+                      " " +
+                      (data.contracting_info?.address.postal_code || "") +
+                      ", " +
+                      (data.contracting_info?.address.country || "")
+                  );
+                }}
+              >
+                <span className='text-[18px] leading-[150%] w-full'>
                   {data.contracting_info?.care_of}
                 </span>
-                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                <span className='text-[18px] leading-[150%] w-full '>
                   {data.contracting_info?.address.address_line_1}
                 </span>
                 {data.contracting_info?.address.address_line_2 && (
-                  <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                  <span className='text-[18px] leading-[150%] w-full '>
                     {data.contracting_info?.address.address_line_2}
                   </span>
                 )}
 
-                <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                <span className='text-[18px] leading-[150%] w-full'>
                   {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
                 </span>
 
                 {data.contracting_info?.address.country && (
-                  <span className='text-[18px] leading-[150%] w-full hover:underline cursor-copy'>
+                  <span className='text-[18px] leading-[150%] w-full'>
                     {data.contracting_info?.address.country}
                   </span>
                 )}
