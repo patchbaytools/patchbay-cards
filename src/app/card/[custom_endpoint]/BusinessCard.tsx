@@ -209,6 +209,12 @@ export default function BusinessCard({
           style={{ y: yTransform }}
         />
         <motion.div
+          onClick={() => {
+            containerRef.current?.scrollTo({
+              top: containerRef.current.scrollHeight,
+              behavior: "smooth",
+            });
+          }}
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 1 }}
