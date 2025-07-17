@@ -17,10 +17,24 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
     return <div>Card not found!</div>;
   }
 
-  const instagramChunks = data?.url_instagram?.split("/");
-  const instagramUsername = instagramChunks
-    ? "@" + instagramChunks[instagramChunks.length - 1]
-    : undefined;
+  const socialUrl =
+    data?.featured_social_link === "instagram"
+      ? data?.url_instagram
+      : data?.featured_social_link === "youtube"
+        ? data?.url_youtube
+        : data?.featured_social_link === "tiktok"
+          ? data?.url_tiktok
+          : data?.featured_social_link === "x"
+            ? data?.url_twitter
+            : undefined;
+
+  const socialChunks = socialUrl?.split("/");
+  const socialUsername =
+    data?.featured_social_link === "website"
+      ? data?.url_website
+      : socialChunks
+        ? "@" + socialChunks[socialChunks.length - 1]
+        : undefined;
 
   return (
     <Card
@@ -82,7 +96,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
                 height={10}
               />
 
-              {instagramUsername}
+              {socialUsername}
             </span>
           ) : undefined}
         </span>
