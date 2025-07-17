@@ -1,154 +1,501 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+
 // ** Motion Imports
 import { motion } from "motion/react";
 
-type CardData = {
-  name?: string;
-  title?: string;
-  subtitle?: string;
-  contractingInfo?: string[];
-  pubLine?: string[];
-  metadata?: {
-    isrc?: string[];
-    upc?: string;
-    rights?: string;
-    publisher?: string;
-  };
-};
+import { Tooltip } from "antd";
 
-export default function DetailedView({ data }: { data?: CardData }) {
+import type { CardData } from "@/lib/getCardData";
+
+export default function DetailedView({ data }: { data?: CardData | null }) {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [showBioTooltip, setShowBioTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showPubLineTooltip, setShowPubLineTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showContractingInfoTooltip, setShowContractingInfoTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showRepresentationTooltip, setShowRepresentationTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showLegalTooltip, setShowLegalTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showLegalNameTooltip, setShowLegalNameTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showIPITooltip, setShowIPITooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showPROTooltip, setShowPROTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  // Tooltip timeout logic
+  useEffect(() => {
+    if (showBioTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowBioTooltip(undefined);
+      }, 1000);
+    } else if (showPubLineTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowPubLineTooltip(undefined);
+      }, 1000);
+    } else if (showContractingInfoTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowContractingInfoTooltip(undefined);
+      }, 1000);
+    } else if (showRepresentationTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowRepresentationTooltip(undefined);
+      }, 1000);
+    } else if (showLegalTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowLegalTooltip(undefined);
+      }, 1000);
+    } else if (showLegalNameTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowLegalNameTooltip(undefined);
+      }, 1000);
+    } else if (showIPITooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowIPITooltip(undefined);
+      }, 1000);
+    } else if (showPROTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowPROTooltip(undefined);
+      }, 1000);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [
+    showBioTooltip,
+    showPubLineTooltip,
+    showContractingInfoTooltip,
+    showRepresentationTooltip,
+    showLegalTooltip,
+    showLegalNameTooltip,
+    showIPITooltip,
+    showPROTooltip,
+  ]);
+
   if (!data) return null;
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
+        duration: 0.5,
       },
     },
   };
   return (
-    <div className='container mx-auto px-4 py-16'>
+    <div className='container h-full mx-auto px-[33px]  text-[#EDEEF0]'>
       <motion.div
-        className='max-w-3xl mx-auto'
+        className='grid grid-cols-2 gap-[100px] h-full'
         initial='hidden'
         whileInView='visible'
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         variants={containerVariants}
       >
-        <motion.div variants={cardVariants}>
-          <h1 className='text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100'>
-            {data.name || "Paul McCartney"}
-          </h1>
-          <p className='text-xl mb-8 text-gray-700 dark:text-gray-300'>
-            {data.title || "Artist, Producer, Songwriter • BMI"}
-          </p>
-        </motion.div>
-        <div className='grid md:grid-cols-2 gap-12 mb-12'>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              CONTRACTING INFO
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.contractingInfo) &&
-              data.contractingInfo.length > 0 ? (
-                data.contractingInfo.map((line, i) => <p key={i}>{line}</p>)
-              ) : (
-                <>
-                  <p>Paul McCartney (fso James Paul McCartney)</p>
-                  <p>10 Downing St.</p>
-                  <p>London, UK SW1A2AA</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              PUB LINE
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.pubLine) && data.pubLine.length > 0 ? (
-                data.pubLine.map((line, i) => <p key={i}>{line}</p>)
-              ) : (
-                <>
-                  <p>James Paul McCartney</p>
-                  <p>BMI</p>
-                  <p>IPI 12345678909</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </div>
-        <motion.div
-          className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-12'
-          variants={cardVariants}
+        <section className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'>
+          {data.contact_info &&
+            (data.contact_info.representation_contact_email ||
+              data.contact_info.legal_contact_email) && (
+              <motion.div
+                initial={{ opacity: 0, x: 0 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className='w-full  gap-[16px] flex flex-col justify-start items-start'
+              >
+                <h1
+                  className='text-[24px] text-[#EDEEF0]'
+                  style={{ fontFamily: "var(--font-inconsolata)" }}
+                >
+                  [CONTACT]
+                </h1>
+                <section
+                  className='w-full flex flex-row justify-start items-start gap-[40px]'
+                  style={{ fontFamily: "var(--font-neue-haas)" }}
+                >
+                  {data.config.show_representation && (
+                    <div className='flex flex-col '>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={showRepresentationTooltip}
+                        onOpenChange={(open) => {
+                          setShowRepresentationTooltip(true);
+                        }}
+                      >
+                        <span
+                          className='text-[18px] hover:underline cursor-pointer'
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.representation_contact_email ||
+                                ""
+                            );
+                          }}
+                        >
+                          {data.contact_info.representation_contact_email}
+                        </span>
+                      </Tooltip>
+                      <span
+                        className='text-[18px] '
+                        style={{ color: "rgba(255, 255, 255, 0.50" }}
+                      >
+                        Representation
+                      </span>
+                    </div>
+                  )}
+                  {data.config.show_legal && (
+                    <div className='flex flex-col '>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={showLegalTooltip}
+                        onOpenChange={(open) => {
+                          setShowLegalTooltip(true);
+                        }}
+                      >
+                        <span
+                          className='text-[18px] hover:underline cursor-pointer'
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.legal_contact_email || ""
+                            );
+                          }}
+                        >
+                          {data.contact_info.legal_contact_email}
+                        </span>
+                      </Tooltip>
+
+                      <span
+                        className='text-[18px] '
+                        style={{ color: "rgba(255, 255, 255, 0.50" }}
+                      >
+                        Legal
+                      </span>
+                    </div>
+                  )}
+                </section>
+              </motion.div>
+            )}
+          {data.bio && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full h-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [BIO]
+              </h1>
+
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='top'
+                open={showBioTooltip}
+                onOpenChange={(open) => {
+                  setShowBioTooltip(true);
+                }}
+              >
+                <span
+                  className='text-[18px] gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline justify-start items-start'
+                  onClick={() => {
+                    navigator.clipboard.writeText(data?.bio || "");
+                  }}
+                  style={{
+                    fontFamily: "var(--font-neue-haas)",
+                    lineHeight: "150%",
+                    fontSize: "18px",
+                    color: "#EDEEF0",
+                    height: `calc(100vh - ${data.config.show_representation ? 315 : 120}px)`,
+                  }}
+                >
+                  {data.bio.split("\n").map((line) => (
+                    <span key={line} className='w-full'>
+                      {line}
+                    </span>
+                  ))}
+                </span>
+              </Tooltip>
+            </motion.div>
+          )}
+        </section>
+        <section
+          className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'
+          style={{ fontFamily: "var(--font-neue-haas)" }}
         >
-          <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-            ADDITIONAL METADATA
-          </h2>
-          <div className='grid md:grid-cols-2 gap-4'>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                ISRC Codes
-              </h3>
-              <ul className='list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300'>
-                {Array.isArray(data.metadata?.isrc) &&
-                data.metadata?.isrc.length > 0 ? (
-                  data.metadata.isrc.map((code, i) => <li key={i}>{code}</li>)
-                ) : (
-                  <>
-                    <li>USRC12345678</li>
-                    <li>GBRC98765432</li>
-                  </>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                UPC/EAN
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.upc || "602567924128"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Performing Rights
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.rights || "BMI"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Publisher
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.publisher || "MPL Communications"}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-        <motion.div className='text-center' variants={cardVariants}>
-          <button className='bg-black dark:bg-gray-700 text-white px-6 py-3 rounded-md hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors'>
-            Download Full Metadata
-          </button>
-        </motion.div>
+          {data.songwriter_details && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [SONGWRITER INFO]
+              </h1>
+
+              <section
+                className='w-full flex flex-row justify-between items-start '
+                style={{ fontFamily: "var(--font-neue-haas)" }}
+              >
+                <div className='flex flex-col '>
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showLegalNameTooltip}
+                    onOpenChange={(open) => {
+                      setShowLegalNameTooltip(true);
+                    }}
+                  >
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_name || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_name}
+                    </span>
+                  </Tooltip>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    Legal Name
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showLegalTooltip}
+                    onOpenChange={(open) => {
+                      setShowIPITooltip(true);
+                    }}
+                  >
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_IPI || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_IPI}
+                    </span>
+                  </Tooltip>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    IPI
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showPROTooltip}
+                    onOpenChange={(open) => {
+                      setShowPROTooltip(true);
+                    }}
+                  >
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_PRO || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_PRO}
+                    </span>
+                  </Tooltip>
+
+                  <span
+                    className='text-[18px] '
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    PRO
+                  </span>
+                </div>
+              </section>
+            </motion.div>
+          )}
+          {data.config.show_pub_line && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [PUB LINE]
+              </h1>
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='top'
+                open={showPubLineTooltip}
+                onOpenChange={(open) => {
+                  setShowPubLineTooltip(true);
+                }}
+              >
+                <span
+                  className='text-[18px] w-full hover:underline cursor-pointer flex flex-col justify-start items-start'
+                  onClick={() => {
+                    navigator.clipboard.writeText(data.pub_line || "");
+                  }}
+                >
+                  {data.pub_line?.split("\n").map((line) => (
+                    <span key={line} className='w-full'>
+                      {line}
+                    </span>
+                  ))}
+                </span>
+              </Tooltip>
+            </motion.div>
+          )}
+          {data.config.show_contracting_info && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className='text-[24px]'
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [CONTRACTING INFO]
+              </h1>
+
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='topLeft'
+                open={showContractingInfoTooltip}
+                onOpenChange={(open) => {
+                  setShowContractingInfoTooltip(true);
+                }}
+              >
+                <section
+                  className=' flex  text-[18px] leading-[150%] w-full flex-col justify-start items-start hover:underline cursor-pointer'
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      (data.contracting_info?.address.name
+                        ? data.contracting_info?.address.name + ", "
+                        : "") +
+                        (data.contracting_info?.care_of
+                          ? "c/o " + data.contracting_info?.care_of + ", "
+                          : "") +
+                        (data.contracting_info?.address.address_line_1 || "") +
+                        ", " +
+                        (data.contracting_info?.address.address_line_2
+                          ? data.contracting_info?.address.address_line_2 + ", "
+                          : "") +
+                        (data.contracting_info?.address.city || "") +
+                        ", " +
+                        (data.contracting_info?.address.state || "") +
+                        " " +
+                        (data.contracting_info?.address.postal_code || "") +
+                        ", " +
+                        (data.contracting_info?.address.country || "")
+                    );
+                  }}
+                >
+                  <span>
+                    {data.contracting_info?.address.name
+                      ? data.contracting_info?.address.name
+                      : ""}
+                  </span>
+                  <span>
+                    {data.contracting_info?.care_of
+                      ? "c/o " + data.contracting_info?.care_of
+                      : ""}
+                  </span>
+                  <span>{data.contracting_info?.address.address_line_1}</span>
+                  {data.contracting_info?.address.address_line_2 && (
+                    <span>{data.contracting_info?.address.address_line_2}</span>
+                  )}
+
+                  <span>
+                    {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
+                  </span>
+
+                  {data.contracting_info?.address.country && (
+                    <span>{data.contracting_info?.address.country}</span>
+                  )}
+                </section>
+              </Tooltip>
+            </motion.div>
+          )}
+        </section>
       </motion.div>
     </div>
   );

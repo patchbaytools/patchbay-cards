@@ -1,79 +1,86 @@
 import "server-only";
 
-export type CardData = {
-  id: string;
-  name: string;
-  title: string;
-  subtitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  image: string;
-  contractingInfo: string[];
-  pubLine: string[];
-  metadata: {
-    isrc: string[];
-    upc: string;
-    rights: string;
-    publisher: string;
-  };
+export type CardSongwriterDetails = {
+  songwriter_name: string | null;
+  songwriter_PRO: string | null;
+  songwriter_IPI: string | null;
 };
 
-const FALLBACK = "N/A";
+export type Config = {
+  custom_endpoint: string | null;
+  enabled: boolean;
+  show_contracting_info: boolean;
+  show_studio_details: boolean;
+  show_pub_line: boolean;
+  show_bio: boolean;
+  show_artist_projects: boolean;
+  show_songwriter_details: boolean;
+  show_representation: boolean;
+  show_legal: boolean;
+  show_socials_section: boolean;
+};
 
-export async function getCardData(id: string): Promise<CardData> {
+export type Address = {
+  name: string;
+  address_line_1: string | null;
+  address_line_2: string | null;
+  city: string | null;
+  state: string | null;
+  postal_code: string | null;
+  country: string | null;
+};
+
+export type ContractingInfo = {
+  book_number: string;
+  address: Address;
+  care_of: string | null;
+};
+
+export type ContactInfo = {
+  representation_contact_email: string | null;
+  legal_contact_email: string | null;
+};
+
+export type CardData = {
+  book_number: string | null;
+  name: string | null;
+  profile_image_url: string | null;
+  featured_social_link: string | null;
+  location: string | null;
+  url_instagram: string | null;
+  url_twitter: string | null;
+  url_website: string | null;
+  url_spotify: string | null;
+  url_youtube: string | null;
+  url_tiktok: string | null;
+  bio: string | null;
+  songwriter_details: CardSongwriterDetails | null;
+  config: Config;
+  pub_line: string | null;
+  contracting_info: ContractingInfo | null;
+  contact_info: ContactInfo | null;
+  artist_projects: string[] | null;
+  roles: string[] | null; // e.g., ["Songwriter", "Producer", ...]
+};
+
+const FALLBACK = undefined;
+
+export async function getCardData(
+  custom_endpoint: string
+): Promise<CardData | null> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/business-card/${id}/`,
-      { cache: "no-store" }
-    );
-    if (!res.ok) throw new Error("Not found");
-    const data = await res.json();
-    return {
-      id: data?.id ?? id ?? FALLBACK,
-      name: data?.name ?? FALLBACK,
-      title: data?.title ?? FALLBACK,
-      subtitle: data?.subtitle ?? FALLBACK,
-      email: data?.email ?? FALLBACK,
-      phone: data?.phone ?? FALLBACK,
-      location: data?.location ?? FALLBACK,
-      image: data?.image ?? FALLBACK,
-      contractingInfo:
-        Array.isArray(data?.contractingInfo) && data.contractingInfo.length > 0
-          ? data.contractingInfo
-          : [FALLBACK],
-      pubLine:
-        Array.isArray(data?.pubLine) && data.pubLine.length > 0
-          ? data.pubLine
-          : [FALLBACK],
-      metadata: {
-        isrc:
-          Array.isArray(data?.metadata?.isrc) && data.metadata.isrc.length > 0
-            ? data.metadata.isrc
-            : [FALLBACK],
-        upc: data?.metadata?.upc ?? FALLBACK,
-        rights: data?.metadata?.rights ?? FALLBACK,
-        publisher: data?.metadata?.publisher ?? FALLBACK,
-      },
-    };
-  } catch {
-    return {
-      id,
-      name: FALLBACK,
-      title: FALLBACK,
-      subtitle: FALLBACK,
-      email: FALLBACK,
-      phone: FALLBACK,
-      location: FALLBACK,
-      image: FALLBACK,
-      contractingInfo: [FALLBACK],
-      pubLine: [FALLBACK],
-      metadata: {
-        isrc: [FALLBACK],
-        upc: FALLBACK,
-        rights: FALLBACK,
-        publisher: FALLBACK,
-      },
-    };
+    const url = `${process.env.NEXT_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      return null;
+      // throw new Error(`Not found - Status: ${res.status}`);
+    }
+
+    const data = (await res.json()) as CardData;
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching card data:", error);
+    throw error;
   }
 }
