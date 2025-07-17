@@ -445,11 +445,15 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 }}
               >
                 <section
-                  className='w-full flex flex-col justify-start items-start hover:underline cursor-pointer'
+                  className=' flex  text-[18px] leading-[150%] w-full flex-col justify-start items-start hover:underline cursor-pointer'
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      (data.contracting_info?.care_of || "") +
-                        ", " +
+                      (data.contracting_info?.address.name
+                        ? data.contracting_info?.address.name + ", "
+                        : "") +
+                        (data.contracting_info?.care_of
+                          ? "c/o " + data.contracting_info?.care_of + ", "
+                          : "") +
                         (data.contracting_info?.address.address_line_1 || "") +
                         ", " +
                         (data.contracting_info?.address.address_line_2
@@ -465,26 +469,27 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                     );
                   }}
                 >
-                  <span className='text-[18px] leading-[150%] w-full'>
-                    {data.contracting_info?.care_of}
+                  <span>
+                    {data.contracting_info?.address.name
+                      ? data.contracting_info?.address.name
+                      : ""}
                   </span>
-                  <span className='text-[18px] leading-[150%] w-full '>
-                    {data.contracting_info?.address.address_line_1}
+                  <span>
+                    {data.contracting_info?.care_of
+                      ? "c/o " + data.contracting_info?.care_of
+                      : ""}
                   </span>
+                  <span>{data.contracting_info?.address.address_line_1}</span>
                   {data.contracting_info?.address.address_line_2 && (
-                    <span className='text-[18px] leading-[150%] w-full '>
-                      {data.contracting_info?.address.address_line_2}
-                    </span>
+                    <span>{data.contracting_info?.address.address_line_2}</span>
                   )}
 
-                  <span className='text-[18px] leading-[150%] w-full'>
+                  <span>
                     {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
                   </span>
 
                   {data.contracting_info?.address.country && (
-                    <span className='text-[18px] leading-[150%] w-full'>
-                      {data.contracting_info?.address.country}
-                    </span>
+                    <span>{data.contracting_info?.address.country}</span>
                   )}
                 </section>
               </Tooltip>
