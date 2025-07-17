@@ -70,6 +70,8 @@ export async function getCardData(
 ): Promise<CardData | null> {
   try {
     const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
+    console.log("LOG FOR US: about to fetch card data, url: ", url);
+
     const res = await fetch(url);
     if (!res.ok) {
       return null;
