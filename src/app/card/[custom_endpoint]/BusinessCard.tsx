@@ -192,7 +192,7 @@ export default function BusinessCard({
                           cursor: "pointer",
                         }}
                         onClick={() => {
-                          window.open(data?.url_website, "_blank");
+                          window.open(data?.url_website ?? "", "_blank");
                         }}
                       >
                         Website ↗
