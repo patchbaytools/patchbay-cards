@@ -120,7 +120,7 @@ export default function BusinessCard({
                         }}
                         onClick={() => {
                           {
-                            window.open(data?.url_instagram, "_blank");
+                            window.open(data?.url_instagram ?? "", "_blank");
                           }
                         }}
                       >
