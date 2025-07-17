@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+
 // ** Motion Imports
 import { motion } from "motion/react";
 
@@ -8,6 +10,116 @@ import { Tooltip } from "antd";
 import type { CardData } from "@/lib/getCardData";
 
 export default function DetailedView({ data }: { data?: CardData | null }) {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [showBioTooltip, setShowBioTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showPubLineTooltip, setShowPubLineTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showContractingInfoTooltip, setShowContractingInfoTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showRepresentationTooltip, setShowRepresentationTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showLegalTooltip, setShowLegalTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showLegalNameTooltip, setShowLegalNameTooltip] = useState<
+    undefined | true
+  >(undefined);
+
+  const [showIPITooltip, setShowIPITooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  const [showPROTooltip, setShowPROTooltip] = useState<undefined | true>(
+    undefined
+  );
+
+  // Tooltip timeout logic
+  useEffect(() => {
+    if (showBioTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowBioTooltip(undefined);
+      }, 1000);
+    } else if (showPubLineTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowPubLineTooltip(undefined);
+      }, 1000);
+    } else if (showContractingInfoTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowContractingInfoTooltip(undefined);
+      }, 1000);
+    } else if (showRepresentationTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowRepresentationTooltip(undefined);
+      }, 1000);
+    } else if (showLegalTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowLegalTooltip(undefined);
+      }, 1000);
+    } else if (showLegalNameTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowLegalNameTooltip(undefined);
+      }, 1000);
+    } else if (showIPITooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowIPITooltip(undefined);
+      }, 1000);
+    } else if (showPROTooltip) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowPROTooltip(undefined);
+      }, 1000);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [
+    showBioTooltip,
+    showPubLineTooltip,
+    showContractingInfoTooltip,
+    showRepresentationTooltip,
+    showLegalTooltip,
+    showLegalNameTooltip,
+    showIPITooltip,
+    showPROTooltip,
+  ]);
+
   if (!data) return null;
 
   const containerVariants = {
@@ -51,18 +163,27 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 >
                   {data.config.show_representation && (
                     <div className='flex flex-col '>
-                      <span
-                        className='text-[18px] hover:underline cursor-pointer'
-                        onClick={() => {
-                          navigator.clipboard.writeText(
-                            data.contact_info?.representation_contact_email ||
-                              ""
-                          );
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={showRepresentationTooltip}
+                        onOpenChange={(open) => {
+                          setShowRepresentationTooltip(true);
                         }}
                       >
-                        {data.contact_info.representation_contact_email}
-                      </span>
-
+                        <span
+                          className='text-[18px] hover:underline cursor-pointer'
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.representation_contact_email ||
+                                ""
+                            );
+                          }}
+                        >
+                          {data.contact_info.representation_contact_email}
+                        </span>
+                      </Tooltip>
                       <span
                         className='text-[18px] '
                         style={{ color: "rgba(255, 255, 255, 0.50" }}
@@ -73,16 +194,26 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   )}
                   {data.config.show_legal && (
                     <div className='flex flex-col '>
-                      <span
-                        className='text-[18px] hover:underline cursor-pointer'
-                        onClick={() => {
-                          navigator.clipboard.writeText(
-                            data.contact_info?.legal_contact_email || ""
-                          );
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={showLegalTooltip}
+                        onOpenChange={(open) => {
+                          setShowLegalTooltip(true);
                         }}
                       >
-                        {data.contact_info.legal_contact_email}
-                      </span>
+                        <span
+                          className='text-[18px] hover:underline cursor-pointer'
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.legal_contact_email || ""
+                            );
+                          }}
+                        >
+                          {data.contact_info.legal_contact_email}
+                        </span>
+                      </Tooltip>
 
                       <span
                         className='text-[18px] '
@@ -109,7 +240,15 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 [BIO]
               </h1>
 
-              <Tooltip color='blue' title='Click to copy' placement='top'>
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='top'
+                open={showBioTooltip}
+                onOpenChange={(open) => {
+                  setShowBioTooltip(true);
+                }}
+              >
                 <span
                   className='text-[18px]  flex text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline '
                   onClick={() => {
@@ -152,16 +291,26 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 style={{ fontFamily: "var(--font-neue-haas)" }}
               >
                 <div className='flex flex-col '>
-                  <span
-                    className='text-[18px] hover:underline cursor-pointer'
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        data.songwriter_details?.songwriter_name || ""
-                      );
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showLegalNameTooltip}
+                    onOpenChange={(open) => {
+                      setShowLegalNameTooltip(true);
                     }}
                   >
-                    {data.songwriter_details.songwriter_name}
-                  </span>
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_name || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_name}
+                    </span>
+                  </Tooltip>
 
                   <span
                     className='text-[18px] '
@@ -171,16 +320,26 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <span
-                    className='text-[18px] hover:underline cursor-pointer'
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        data.songwriter_details?.songwriter_IPI || ""
-                      );
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showLegalTooltip}
+                    onOpenChange={(open) => {
+                      setShowIPITooltip(true);
                     }}
                   >
-                    {data.songwriter_details.songwriter_IPI}
-                  </span>
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_IPI || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_IPI}
+                    </span>
+                  </Tooltip>
 
                   <span
                     className='text-[18px] '
@@ -190,16 +349,26 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <span
-                    className='text-[18px] hover:underline cursor-pointer'
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        data.songwriter_details?.songwriter_PRO || ""
-                      );
+                  <Tooltip
+                    title='Copied!'
+                    trigger={["click"]}
+                    placement='top'
+                    open={showPROTooltip}
+                    onOpenChange={(open) => {
+                      setShowPROTooltip(true);
                     }}
                   >
-                    {data.songwriter_details.songwriter_PRO}
-                  </span>
+                    <span
+                      className='text-[18px] hover:underline cursor-pointer'
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          data.songwriter_details?.songwriter_PRO || ""
+                        );
+                      }}
+                    >
+                      {data.songwriter_details.songwriter_PRO}
+                    </span>
+                  </Tooltip>
 
                   <span
                     className='text-[18px] '
@@ -224,15 +393,28 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
               >
                 [PUB LINE]
               </h1>
-
-              <span
-                className='text-[18px] w-full hover:underline cursor-pointer'
-                onClick={() => {
-                  navigator.clipboard.writeText(data.pub_line || "");
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='top'
+                open={showPubLineTooltip}
+                onOpenChange={(open) => {
+                  setShowPubLineTooltip(true);
                 }}
               >
-                {data.pub_line}
-              </span>
+                <span
+                  className='text-[18px] w-full hover:underline cursor-pointer flex flex-col justify-start items-start'
+                  onClick={() => {
+                    navigator.clipboard.writeText(data.pub_line || "");
+                  }}
+                >
+                  {data.pub_line?.split("\n").map((line) => (
+                    <span key={line} className='w-full'>
+                      {line}
+                    </span>
+                  ))}
+                </span>
+              </Tooltip>
             </motion.div>
           )}
           {data.config.show_contracting_info && (
@@ -249,49 +431,59 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 [CONTRACTING INFO]
               </h1>
 
-              <section
-                className='w-full flex flex-col justify-start items-start hover:underline cursor-pointer'
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    (data.contracting_info?.care_of || "") +
-                      ", " +
-                      (data.contracting_info?.address.address_line_1 || "") +
-                      ", " +
-                      (data.contracting_info?.address.address_line_2
-                        ? data.contracting_info?.address.address_line_2 + ", "
-                        : "") +
-                      (data.contracting_info?.address.city || "") +
-                      ", " +
-                      (data.contracting_info?.address.state || "") +
-                      " " +
-                      (data.contracting_info?.address.postal_code || "") +
-                      ", " +
-                      (data.contracting_info?.address.country || "")
-                  );
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='topLeft'
+                open={showContractingInfoTooltip}
+                onOpenChange={(open) => {
+                  setShowContractingInfoTooltip(true);
                 }}
               >
-                <span className='text-[18px] leading-[150%] w-full'>
-                  {data.contracting_info?.care_of}
-                </span>
-                <span className='text-[18px] leading-[150%] w-full '>
-                  {data.contracting_info?.address.address_line_1}
-                </span>
-                {data.contracting_info?.address.address_line_2 && (
-                  <span className='text-[18px] leading-[150%] w-full '>
-                    {data.contracting_info?.address.address_line_2}
-                  </span>
-                )}
-
-                <span className='text-[18px] leading-[150%] w-full'>
-                  {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
-                </span>
-
-                {data.contracting_info?.address.country && (
+                <section
+                  className='w-full flex flex-col justify-start items-start hover:underline cursor-pointer'
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      (data.contracting_info?.care_of || "") +
+                        ", " +
+                        (data.contracting_info?.address.address_line_1 || "") +
+                        ", " +
+                        (data.contracting_info?.address.address_line_2
+                          ? data.contracting_info?.address.address_line_2 + ", "
+                          : "") +
+                        (data.contracting_info?.address.city || "") +
+                        ", " +
+                        (data.contracting_info?.address.state || "") +
+                        " " +
+                        (data.contracting_info?.address.postal_code || "") +
+                        ", " +
+                        (data.contracting_info?.address.country || "")
+                    );
+                  }}
+                >
                   <span className='text-[18px] leading-[150%] w-full'>
-                    {data.contracting_info?.address.country}
+                    {data.contracting_info?.care_of}
                   </span>
-                )}
-              </section>
+                  <span className='text-[18px] leading-[150%] w-full '>
+                    {data.contracting_info?.address.address_line_1}
+                  </span>
+                  {data.contracting_info?.address.address_line_2 && (
+                    <span className='text-[18px] leading-[150%] w-full '>
+                      {data.contracting_info?.address.address_line_2}
+                    </span>
+                  )}
+
+                  <span className='text-[18px] leading-[150%] w-full'>
+                    {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
+                  </span>
+
+                  {data.contracting_info?.address.country && (
+                    <span className='text-[18px] leading-[150%] w-full'>
+                      {data.contracting_info?.address.country}
+                    </span>
+                  )}
+                </section>
+              </Tooltip>
             </motion.div>
           )}
         </section>

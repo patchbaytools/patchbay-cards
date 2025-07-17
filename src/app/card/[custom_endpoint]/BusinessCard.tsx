@@ -72,132 +72,136 @@ export default function BusinessCard({
             </Button>
           </div>
           <div className='flex flex-row justify-between items-start gap-[27px] select-none'>
-            <div
-              onMouseEnter={() => setSocialsOpen(true)}
-              onMouseLeave={() => setSocialsOpen(false)}
-              className='flex flex-col justify-start items-end gap-[30px]'
-            >
-              <Button
-                className='text-[24px]'
-                type='text'
-                style={{
-                  fontFamily: "var(--font-inconsolata)",
-                  color: "#EDEEF0",
-                  padding: "0px",
-                }}
-                onClick={() => setSocialsOpen(!socialsOpen)}
+            {data?.config.show_socials_section && (
+              <div
+                onMouseEnter={() => setSocialsOpen(true)}
+                onMouseLeave={() => setSocialsOpen(false)}
+                className='flex flex-col justify-start items-end gap-[30px]'
               >
-                [SOCIALS]
-              </Button>
-              {socialsOpen && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    height: 50,
-                    overflow: "hidden",
+                <Button
+                  className='text-[24px]'
+                  type='text'
+                  style={{
+                    fontFamily: "var(--font-inconsolata)",
+                    color: "#EDEEF0",
+                    padding: "0px",
                   }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, y: 100, height: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  className='flex flex-col justify-start items-end w-full gap-[16px]'
+                  onClick={() => setSocialsOpen(!socialsOpen)}
                 >
-                  {data?.url_instagram && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className='text-[19px] leading-[19px] font-medium hover:underline'
-                      style={{
-                        fontFamily: "var(--font-neue-haas-unica)",
-                        color: "#EDEEF0",
-                        padding: "0px",
-                        margin: "0px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        window.open(data?.url_instagram, "_blank");
-                      }}
-                    >
-                      Instagram ↗
-                    </motion.span>
-                  )}
-                  {data?.url_tiktok && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className='text-[19px] leading-[19px] font-medium hover:underline'
-                      style={{
-                        fontFamily: "var(--font-neue-haas-unica)",
-                        color: "#EDEEF0",
-                        padding: "0px",
-                        margin: "0px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Tiktok ↗
-                    </motion.span>
-                  )}
-                  {data?.url_youtube && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className='text-[19px] leading-[19px] font-medium hover:underline'
-                      style={{
-                        fontFamily: "var(--font-neue-haas-unica)",
-                        color: "#EDEEF0",
-                        padding: "0px",
-                        margin: "0px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      YouTube ↗
-                    </motion.span>
-                  )}
-                  {data?.url_twitter && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className='text-[19px] leading-[19px] font-medium hover:underline'
-                      style={{
-                        fontFamily: "var(--font-neue-haas-unica)",
-                        color: "#EDEEF0",
-                        padding: "0px",
-                        margin: "0px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      X ↗
-                    </motion.span>
-                  )}
-                  {data?.url_website && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className='text-[19px] leading-[19px] font-medium hover:underline'
-                      style={{
-                        fontFamily: "var(--font-neue-haas-unica)",
-                        color: "#EDEEF0",
-                        padding: "0px",
-                        margin: "0px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        window.open(data?.url_website, "_blank");
-                      }}
-                    >
-                      Website ↗
-                    </motion.span>
-                  )}
-                </motion.div>
-              )}
-            </div>
+                  [SOCIALS]
+                </Button>
+                {socialsOpen && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      height: 50,
+                      overflow: "hidden",
+                    }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, y: 100, height: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut",
+                    }}
+                    className='flex flex-col justify-start items-end w-full gap-[16px]'
+                  >
+                    {data?.url_instagram && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        style={{
+                          fontFamily: "var(--font-neue-haas-unica)",
+                          color: "#EDEEF0",
+                          padding: "0px",
+                          margin: "0px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          {
+                            window.open(data?.url_instagram, "_blank");
+                          }
+                        }}
+                      >
+                        Instagram ↗
+                      </motion.span>
+                    )}
+                    {data?.url_tiktok && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        style={{
+                          fontFamily: "var(--font-neue-haas-unica)",
+                          color: "#EDEEF0",
+                          padding: "0px",
+                          margin: "0px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Tiktok ↗
+                      </motion.span>
+                    )}
+                    {data?.url_youtube && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        style={{
+                          fontFamily: "var(--font-neue-haas-unica)",
+                          color: "#EDEEF0",
+                          padding: "0px",
+                          margin: "0px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        YouTube ↗
+                      </motion.span>
+                    )}
+                    {data?.url_twitter && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        style={{
+                          fontFamily: "var(--font-neue-haas-unica)",
+                          color: "#EDEEF0",
+                          padding: "0px",
+                          margin: "0px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        X ↗
+                      </motion.span>
+                    )}
+                    {data?.url_website && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        style={{
+                          fontFamily: "var(--font-neue-haas-unica)",
+                          color: "#EDEEF0",
+                          padding: "0px",
+                          margin: "0px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          window.open(data?.url_website, "_blank");
+                        }}
+                      >
+                        Website ↗
+                      </motion.span>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+            )}
           </div>
         </motion.header>
         <motion.div

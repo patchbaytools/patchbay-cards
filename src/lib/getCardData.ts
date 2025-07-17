@@ -17,7 +17,7 @@ export type Config = {
   show_songwriter_details: boolean;
   show_representation: boolean;
   show_legal: boolean;
-  // Add more fields if needed
+  show_socials_section: boolean;
 };
 
 export type Address = {
@@ -69,7 +69,7 @@ export async function getCardData(
   custom_endpoint: string
 ): Promise<CardData | null> {
   try {
-    const url = `${process.env.NEXT_PATCHBAY_API_URL}/api/v1/cards/public/${custom_endpoint}`;
+    const url = `${process.env.NEXT_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
     const res = await fetch(url);
     if (!res.ok) {
       return null;

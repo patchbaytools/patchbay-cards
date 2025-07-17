@@ -44,51 +44,48 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
       }}
     >
       <header
-        className='w-full h-[18px] flex flex-row space-evenly text-white font-[var(--font-neue-haas)] '
+        className='w-full h-[18px] grid grid-cols-3 text-white font-[var(--font-neue-haas)] '
         style={{
           color: "white",
           fontSize: "12px",
           fontWeight: "500",
-          display: "flex",
-          flexDirection: "row",
+
           justifyContent: "space-between",
           alignItems: "center",
           fontFamily: "var(--font-neue-haas)",
           userSelect: "none",
         }}
       >
-        <span>
-          {data?.songwriter_details?.songwriter_name ?? (
-            <Skeleton.Input active size='small' />
-          )}
+        <span className='flex w-full flex-row justify-start items-start'>
+          {data?.songwriter_details?.songwriter_name ?? undefined}
         </span>
-        {data?.location ? (
-          <span className='flex flex-row  gap-[7px]'>
-            <Image
-              src='/images/LocationIcon.svg'
-              alt='Instagram'
-              width={7.894}
-              height={9.947}
-            />
-            <span>{`${data?.location}`}</span>
-          </span>
-        ) : (
-          <Skeleton.Input active size='small' />
-        )}
-        {data?.url_instagram ? (
-          <span className='flex flex-row  gap-[7px]'>
-            <Image
-              src='/images/InstagramIcon.svg'
-              alt='Instagram'
-              width={10}
-              height={10}
-            />
+        <span className='flex w-full flex-row justify-center items-start'>
+          {data?.location ? (
+            <span className='flex flex-row  gap-[7px]'>
+              <Image
+                src='/images/LocationIcon.svg'
+                alt='Instagram'
+                width={7.894}
+                height={9.947}
+              />
+              <span>{`${data?.location}`}</span>
+            </span>
+          ) : undefined}
+        </span>
+        <span className='flex w-full flex-row justify-end items-start'>
+          {data?.url_instagram ? (
+            <span className='flex flex-row  gap-[7px]'>
+              <Image
+                src='/images/InstagramIcon.svg'
+                alt='Instagram'
+                width={10}
+                height={10}
+              />
 
-            {instagramUsername}
-          </span>
-        ) : (
-          <span className='w-[65px] h-[10px] bg-white'></span>
-        )}
+              {instagramUsername}
+            </span>
+          ) : undefined}
+        </span>
       </header>
       <section
         className='select-none h-full w-full flex flex-row justify-between space-between items-end font-[var(--font-neue-haas)]'
