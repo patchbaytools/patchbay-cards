@@ -11,6 +11,7 @@ import Card from "@/components/business-card/3DLicenseCard";
 import type { CardData } from "@/lib/getCardData";
 
 // Types for nested objects
+console.log("test for build");
 
 const CardTemplate = ({ data }: { data?: CardData }) => {
   if (!data) {
