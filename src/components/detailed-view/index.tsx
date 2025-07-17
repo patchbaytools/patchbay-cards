@@ -250,7 +250,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                 }}
               >
                 <span
-                  className='text-[18px]  flex text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline '
+                  className='text-[18px] gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline justify-start items-start'
                   onClick={() => {
                     navigator.clipboard.writeText(data?.bio || "");
                   }}
@@ -262,7 +262,11 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                     height: `calc(100vh - ${data.config.show_representation ? 315 : 120}px)`,
                   }}
                 >
-                  {data.bio}
+                  {data.bio.split("\n").map((line) => (
+                    <span key={line} className='w-full'>
+                      {line}
+                    </span>
+                  ))}
                 </span>
               </Tooltip>
             </motion.div>
