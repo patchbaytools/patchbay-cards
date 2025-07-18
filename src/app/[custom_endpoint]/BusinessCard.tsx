@@ -28,13 +28,15 @@ export default function BusinessCard({
   });
   const yTransform = useTransform(smoothScrollProgress, [0, 1], [0, -100]);
 
-  if (!data) {
-    return (
-      <div className='h-[calc(100vh-56px)]  w-full flex justify-center items-center'>
-        No Patchbay Card found
-      </div>
-    );
-  }
+  // if (!data) {
+  //   window.open("https://patchbay.xyz", "_self");
+
+  //   // return (
+  //   //   <div className='h-[calc(100vh-56px)]  w-full flex justify-center items-center'>
+  //   //     No Patchbay Card found
+  //   //   </div>
+  //   // );
+  // }
 
   return (
     <div

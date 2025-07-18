@@ -1,5 +1,7 @@
 import "server-only";
 
+import { redirect } from "next/navigation";
+
 export type CardSongwriterDetails = {
   songwriter_name: string | null;
   songwriter_PRO: string | null;
@@ -70,12 +72,10 @@ export async function getCardData(
 ): Promise<CardData | null> {
   try {
     const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
-    console.log("LOG FOR US: about to fetch card data, url: ", url);
 
     const res = await fetch(url);
     if (!res.ok) {
-      return null;
-      // throw new Error(`Not found - Status: ${res.status}`);
+      redirect("https://patchbay.xyz");
     }
 
     const data = (await res.json()) as CardData;
