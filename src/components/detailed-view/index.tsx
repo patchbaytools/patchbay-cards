@@ -479,13 +479,15 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                       ? "c/o " + data.contracting_info?.care_of
                       : ""}
                   </span>
-                  <span>{data.contracting_info?.address.address_line_1}</span>
+                  <span>
+                    {data.contracting_info?.address.address_line_1 ?? ""}
+                  </span>
                   {data.contracting_info?.address.address_line_2 && (
                     <span>{data.contracting_info?.address.address_line_2}</span>
                   )}
 
                   <span>
-                    {`${data.contracting_info?.address.city}, ${data.contracting_info?.address.state} ${data.contracting_info?.address.postal_code}`}
+                    {`${data.contracting_info?.address.city ? data.contracting_info?.address.city + ", " : ""} ${data.contracting_info?.address.state ? data.contracting_info?.address.state + " " : ""} ${data.contracting_info?.address.postal_code ? data.contracting_info?.address.postal_code : ""}`}
                   </span>
 
                   {data.contracting_info?.address.country && (

@@ -6,11 +6,11 @@ import React from "react";
 import Card from "@/components/business-card/3DLicenseCard";
 import type { CardData } from "@/lib/getCardData";
 
-import { IoLogoInstagram } from "react-icons/io";
-import { ImYoutube2 } from "react-icons/im";
-import { PiTiktokLogo } from "react-icons/pi";
-import { FaXTwitter } from "react-icons/fa6";
 import { BiWorld } from "react-icons/bi";
+import { FaXTwitter } from "react-icons/fa6";
+import { ImYoutube2 } from "react-icons/im";
+import { IoLogoInstagram } from "react-icons/io";
+import { PiTiktokLogo } from "react-icons/pi";
 
 // Types for nested objects
 console.log("test for build");
@@ -82,7 +82,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
         return linkObject;
       case "website":
         linkObject = {
-          url: data?.url_website ?? undefined,
+          url: data?.url_website?.split("//")[1].split("/")[0] ?? undefined,
           icon: data?.url_website ? (
             <BiWorld style={{ height: 10, width: 10 }} />
           ) : undefined,
