@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix",
     "prettier": "npx prettier --write ./",
     "prebuild": "npx prettier --write ./ && tsc --noEmit",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "build-api-client": "openapi --input http://localhost:8000/openapi.json --output ./src/api-client --client axios"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.7",
@@ -19,6 +20,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "antd": "^5.26.4",
+    "axios": "^1.10.0",
     "country-list": "^2.3.0",
     "motion": "^12.23.0",
     "next": "15.3.2",
@@ -42,6 +44,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "eslint-plugin-import": "^2.32.0",
+    "openapi-typescript-codegen": "^0.29.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"

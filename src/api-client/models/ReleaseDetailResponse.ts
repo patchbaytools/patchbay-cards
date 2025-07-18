@@ -1,0 +1,71 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+import type { AssetCatalogTier } from './AssetCatalogTier';
+import type { DealSummaryResponse } from './DealSummaryResponse';
+import type { DeliveryJobStatusFullResponse } from './DeliveryJobStatusFullResponse';
+import type { IntegrationDeliveryStatusResponse } from './IntegrationDeliveryStatusResponse';
+import type { IntegrationType } from './IntegrationType';
+import type { PreorderType } from './PreorderType';
+import type { ReleaseAccessType } from './ReleaseAccessType';
+import type { ReleaseArtistResponse } from './ReleaseArtistResponse';
+import type { ReleaseAssetResponse } from './ReleaseAssetResponse';
+import type { ReleaseProduct } from './ReleaseProduct';
+import type { ReleaseStatus } from './ReleaseStatus';
+import type { ReleaseTerritoryResponse } from './ReleaseTerritoryResponse';
+import type { ReleaseTiming } from './ReleaseTiming';
+import type { ReleaseValidationResponse } from './ReleaseValidationResponse';
+import type { TrackResponse } from './TrackResponse';
+export type ReleaseDetailResponse = {
+    book_number?: (string | null);
+    can_edit?: boolean;
+    can_view_clearances?: boolean;
+    can_view_all_assets?: boolean;
+    number: string;
+    name: string;
+    overview_access?: (ReleaseAccessType | null);
+    product_access?: (ReleaseAccessType | null);
+    assets_access?: (ReleaseAccessType | null);
+    analytics_access?: (ReleaseAccessType | null);
+    clearances_access?: (ReleaseAccessType | null);
+    can_share?: boolean;
+    total_discs?: (number | null);
+    upc?: (string | null);
+    release_date?: (string | null);
+    pre_save_date?: (string | null);
+    original_release_date?: (string | null);
+    release_timing?: (ReleaseTiming | null);
+    preorder_type?: (PreorderType | null);
+    product?: (ReleaseProduct | null);
+    p_line_year?: (number | null);
+    p_line_text?: (string | null);
+    c_line_year?: (number | null);
+    c_line_text?: (string | null);
+    asset_catalog_tier?: (AssetCatalogTier | null);
+    label?: (string | null);
+    spotify_id?: (string | null);
+    bio?: (string | null);
+    blurb?: (string | null);
+    genre_primary?: (string | null);
+    genre_secondary?: (string | null);
+    subgenre_primary?: (string | null);
+    subgenre_secondary?: (string | null);
+    artists?: Array<ReleaseArtistResponse>;
+    assets?: Array<ReleaseAssetResponse>;
+    cover_art_url?: (string | null);
+    tracks?: Array<TrackResponse>;
+    record_deal?: (DealSummaryResponse | null);
+    territories?: (ReleaseTerritoryResponse | null);
+    metadata_complete?: boolean;
+    catalog_number?: (string | null);
+    status?: (ReleaseStatus | null);
+    is_released?: (boolean | null);
+    delivery_jobs?: Array<DeliveryJobStatusFullResponse>;
+    display_artist_name?: (string | null);
+    integration?: (IntegrationType | null);
+    integration_delivery_statuses?: Array<IntegrationDeliveryStatusResponse>;
+    last_updated?: (string | null);
+    validation?: (ReleaseValidationResponse | null);
+};
+
