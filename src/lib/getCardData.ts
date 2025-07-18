@@ -65,11 +65,7 @@ export type CardData = {
   roles: string[] | null; // e.g., ["Songwriter", "Producer", ...]
 };
 
-const FALLBACK = undefined;
-
-export async function getCardData(
-  custom_endpoint: string
-): Promise<CardData | null> {
+export async function getCardData(custom_endpoint: string): Promise<CardData> {
   try {
     const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
 
