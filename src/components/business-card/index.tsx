@@ -1,41 +1,98 @@
 // ** React/Next.js Imports
 import Image from "next/image";
 import React from "react";
-import { Skeleton, Tooltip } from "antd";
-
-import { getCode, getName } from "country-list";
-import { states } from "states-us";
 
 // ** Custom Components, Hooks, Utils, etc.
 import Card from "@/components/business-card/3DLicenseCard";
 import type { CardData } from "@/lib/getCardData";
 
+import { IoLogoInstagram } from "react-icons/io";
+import { ImYoutube2 } from "react-icons/im";
+import { PiTiktokLogo } from "react-icons/pi";
+import { FaXTwitter } from "react-icons/fa6";
+import { BiWorld } from "react-icons/bi";
+
 // Types for nested objects
 console.log("test for build");
+
+type LinkObject =
+  | {
+      url: string | undefined;
+      icon: React.JSX.Element | undefined;
+    }
+  | undefined;
 
 const CardTemplate = ({ data }: { data?: CardData }) => {
   if (!data) {
     return <div>Card not found!</div>;
   }
 
-  const socialUrl =
-    data?.featured_social_link === "instagram"
-      ? data?.url_instagram
-      : data?.featured_social_link === "youtube"
-        ? data?.url_youtube
-        : data?.featured_social_link === "tiktok"
-          ? data?.url_tiktok
-          : data?.featured_social_link === "x"
-            ? data?.url_twitter
-            : undefined;
+  const getFeaturedSocialLink = (): LinkObject | undefined => {
+    let linkObject: LinkObject | undefined;
 
-  const socialChunks = socialUrl?.split("/");
-  const socialUsername =
-    data?.featured_social_link === "website"
-      ? data?.url_website
-      : socialChunks
-        ? "@" + socialChunks[socialChunks.length - 1]
-        : undefined;
+    switch (data?.featured_social_link) {
+      case "instagram":
+        const instagramChunks = data?.url_instagram?.split("/");
+        const instagramHandle = instagramChunks
+          ? "@" + instagramChunks[instagramChunks.length - 1]
+          : undefined;
+
+        linkObject = {
+          url: instagramHandle,
+          icon: <IoLogoInstagram style={{ height: 10, width: 10 }} />,
+        };
+        return linkObject;
+
+      case "youtube":
+        const youtubeChunks = data?.url_youtube?.split("/");
+        const youtubeHandle = youtubeChunks
+          ? "@" + youtubeChunks[youtubeChunks.length - 1]
+          : undefined;
+
+        linkObject = {
+          url: youtubeHandle,
+          icon: youtubeHandle ? (
+            <ImYoutube2 style={{ height: 10, width: 10 }} />
+          ) : undefined,
+        };
+        return linkObject;
+      case "tiktok":
+        const tiktokChunks = data?.url_tiktok?.split("/");
+        const tiktokHandle = tiktokChunks
+          ? "@" + tiktokChunks[tiktokChunks.length - 1]
+          : undefined;
+
+        linkObject = {
+          url: tiktokHandle,
+          icon: tiktokHandle ? (
+            <PiTiktokLogo style={{ height: 10, width: 10 }} />
+          ) : undefined,
+        };
+        return linkObject;
+      case "x":
+        const xChunks = data?.url_twitter?.split("/");
+        const xHandle = xChunks ? "@" + xChunks[xChunks.length - 1] : undefined;
+
+        linkObject = {
+          url: xHandle,
+          icon: xHandle ? (
+            <FaXTwitter style={{ height: 10, width: 10 }} />
+          ) : undefined,
+        };
+        return linkObject;
+      case "website":
+        linkObject = {
+          url: data?.url_website ?? undefined,
+          icon: data?.url_website ? (
+            <BiWorld style={{ height: 10, width: 10 }} />
+          ) : undefined,
+        };
+        return linkObject;
+
+      default:
+        return undefined;
+    }
+  };
 
   return (
     <Card
@@ -88,16 +145,18 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
           ) : undefined}
         </span>
         <span className='flex w-full flex-row justify-end items-start'>
-          {data?.url_instagram ? (
-            <span className='flex flex-row  gap-[7px]'>
-              <Image
+          {data?.featured_social_link ? (
+            <span className='flex flex-row  gap-[7px] justify-end items-center'>
+              {/* <Image
                 src='/images/InstagramIcon.svg'
                 alt='Instagram'
                 width={10}
                 height={10}
-              />
+              /> */}
 
-              {socialUsername}
+              {getFeaturedSocialLink()?.icon}
+
+              {getFeaturedSocialLink()?.url}
             </span>
           ) : undefined}
         </span>
