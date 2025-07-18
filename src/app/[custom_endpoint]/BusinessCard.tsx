@@ -1,14 +1,12 @@
 "use client";
 
-// ** React/Next.js Imports
-import { useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "antd";
+import { useRef, useState } from "react";
 
-// ** Motion Imports
 import { useScroll, useSpring, motion, useTransform } from "motion/react";
 
-// ** Custom Components, Hooks, Utils, etc.
+import { Button } from "antd";
+
 import CardTemplate from "@/components/business-card/index";
 import DetailedView from "@/components/detailed-view";
 import type { CardData } from "@/lib/getCardData";

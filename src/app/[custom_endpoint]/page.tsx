@@ -1,7 +1,6 @@
 // ** Custom Components, Hooks, Utils, etc.
-import BusinessCard from "@/app/card/[custom_endpoint]/BusinessCard";
+import BusinessCard from "@/app/[custom_endpoint]/BusinessCard";
 import { getCardData } from "@/lib/getCardData";
-import { Button } from "antd";
 
 // Test if this file is being loaded
 
