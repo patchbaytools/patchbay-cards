@@ -1,31 +1,25 @@
 import "server-only";
+
 import { redirect } from "next/navigation";
 
-import {
-  type BusinessCardResponse,
-  BusinessCardsService,
-  OpenAPI,
-} from "@/api-client";
-
-OpenAPI.BASE =
-  process.env.NEXT_PUBLIC_PATCHBAY_API_URL || "https://api.patchbay.xyz";
+import type { BusinessCardResponse } from "./BusinessCardResponse";
 
 export async function getCardData(
   custom_endpoint: string
-): Promise<BusinessCardResponse> {
+): Promise<BusinessCardResponse | null> {
   try {
-    const data =
-      await BusinessCardsService.getPublicBusinessCardApiV1CardPublicCustomEndpointGet(
-        custom_endpoint
-      );
+    const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}`;
 
-    if (!data) {
+    const res = await fetch(url);
+    if (!res.ok) {
       redirect("https://patchbay.xyz");
     }
+
+    const data = (await res.json()) as BusinessCardResponse;
 
     return data;
   } catch (error) {
     console.error("Error fetching card data:", error);
-    redirect("https://patchbay.xyz");
+    throw error;
   }
 }

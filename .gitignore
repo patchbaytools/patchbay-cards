@@ -23,5 +23,4 @@ yarn-error.log*
 .env*.local
 
 # API Client - only keep specific models
-src/api-client/models/*
-!src/api-client/models/BusinessCardResponse.ts
+src/api-client/*

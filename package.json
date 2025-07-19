@@ -30,7 +30,8 @@
     "states-us": "^1.1.1",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.176.0",
-    "us-state-codes": "^1.1.2"
+    "us-state-codes": "^1.1.2",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
