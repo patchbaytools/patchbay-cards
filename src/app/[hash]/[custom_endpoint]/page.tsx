@@ -11,10 +11,9 @@ export default async function Page({
 }) {
   const resolvedParams = await params;
 
-  console.log("LOG FOR US: resolvedParams", resolvedParams);
   const data = await getCardData(
-    resolvedParams.custom_endpoint,
-    resolvedParams.hash
+    resolvedParams.hash,
+    resolvedParams.custom_endpoint
   );
   return (
     <div className='w-full h-full'>
