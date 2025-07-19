@@ -9,13 +9,13 @@ import { Button } from "antd";
 
 import CardTemplate from "@/components/business-card/index";
 import DetailedView from "@/components/detailed-view";
-import type { CardData } from "@/lib/getCardData";
+import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
 
 export default function BusinessCard({
   data,
   id,
 }: {
-  data: CardData | null;
+  data: BusinessCardResponse | null;
   id: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,16 +27,6 @@ export default function BusinessCard({
     restDelta: 0.001,
   });
   const yTransform = useTransform(smoothScrollProgress, [0, 1], [0, -100]);
-
-  // if (!data) {
-  //   window.open("https://patchbay.xyz", "_self");
-
-  //   // return (
-  //   //   <div className='h-[calc(100vh-56px)]  w-full flex justify-center items-center'>
-  //   //     No Patchbay Card found
-  //   //   </div>
-  //   // );
-  // }
 
   return (
     <div
@@ -72,7 +62,7 @@ export default function BusinessCard({
             </Button>
           </div>
           <div className='flex flex-row justify-between items-start gap-[27px] select-none'>
-            {data?.config.show_socials_section && (
+            {data?.config?.show_socials_section && (
               <div
                 onMouseEnter={() => setSocialsOpen(true)}
                 onMouseLeave={() => setSocialsOpen(false)}
