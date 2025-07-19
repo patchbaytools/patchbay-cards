@@ -4,7 +4,10 @@ import React from "react";
 
 // ** Custom Components, Hooks, Utils, etc.
 import Card from "@/components/business-card/3DLicenseCard";
-import type { CardData } from "@/lib/getCardData";
+import {
+  type BusinessCardResponse,
+  FeaturedSocialLinkChoices,
+} from "@/lib/BusinessCardResponse";
 
 import { BiWorld } from "react-icons/bi";
 import { FaXTwitter } from "react-icons/fa6";
@@ -22,7 +25,7 @@ type LinkObject =
     }
   | undefined;
 
-const CardTemplate = ({ data }: { data?: CardData }) => {
+const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
   if (!data) {
     return <div>Card not found!</div>;
   }
@@ -31,7 +34,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
     let linkObject: LinkObject | undefined;
 
     switch (data?.featured_social_link) {
-      case "instagram":
+      case FeaturedSocialLinkChoices.INSTAGRAM:
         const instagramChunks = data?.url_instagram?.split("/");
         const instagramHandle = instagramChunks
           ? "@" + instagramChunks[instagramChunks.length - 1]
@@ -43,7 +46,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
         };
         return linkObject;
 
-      case "youtube":
+      case FeaturedSocialLinkChoices.YOUTUBE:
         const youtubeChunks = data?.url_youtube?.split("/");
         const youtubeHandle = youtubeChunks
           ? "@" + youtubeChunks[youtubeChunks.length - 1]
@@ -56,7 +59,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
           ) : undefined,
         };
         return linkObject;
-      case "tiktok":
+      case FeaturedSocialLinkChoices.TIKTOK:
         const tiktokChunks = data?.url_tiktok?.split("/");
         const tiktokHandle = tiktokChunks
           ? "@" + tiktokChunks[tiktokChunks.length - 1]
@@ -69,7 +72,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
           ) : undefined,
         };
         return linkObject;
-      case "x":
+      case FeaturedSocialLinkChoices.X:
         const xChunks = data?.url_twitter?.split("/");
         const xHandle = xChunks ? "@" + xChunks[xChunks.length - 1] : undefined;
 
@@ -80,7 +83,7 @@ const CardTemplate = ({ data }: { data?: CardData }) => {
           ) : undefined,
         };
         return linkObject;
-      case "website":
+      case FeaturedSocialLinkChoices.WEBSITE:
         linkObject = {
           url: data?.url_website?.split("//")[1].split("/")[0] ?? undefined,
           icon: data?.url_website ? (

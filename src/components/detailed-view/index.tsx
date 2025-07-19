@@ -7,9 +7,13 @@ import { motion } from "motion/react";
 
 import { Tooltip } from "antd";
 
-import type { CardData } from "@/lib/getCardData";
+import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
 
-export default function DetailedView({ data }: { data?: CardData | null }) {
+export default function DetailedView({
+  data,
+}: {
+  data?: BusinessCardResponse | null;
+}) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [showBioTooltip, setShowBioTooltip] = useState<undefined | true>(
@@ -161,7 +165,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                   className='w-full flex flex-row justify-start items-start gap-[40px]'
                   style={{ fontFamily: "var(--font-neue-haas)" }}
                 >
-                  {data.config.show_representation && (
+                  {data.config?.show_representation && (
                     <div className='flex flex-col '>
                       <Tooltip
                         title='Copied!'
@@ -192,7 +196,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                       </span>
                     </div>
                   )}
-                  {data.config.show_legal && (
+                  {data.config?.show_legal && (
                     <div className='flex flex-col '>
                       <Tooltip
                         title='Copied!'
@@ -259,7 +263,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
                     lineHeight: "150%",
                     fontSize: "18px",
                     color: "#EDEEF0",
-                    height: `calc(100vh - ${data.config.show_representation ? 315 : 120}px)`,
+                    height: `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
                   }}
                 >
                   {data.bio.split("\n").map((line) => (
@@ -384,7 +388,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
               </section>
             </motion.div>
           )}
-          {data.config.show_pub_line && (
+          {data.config?.show_pub_line && (
             <motion.div
               initial={{ opacity: 0, x: 0 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -421,7 +425,7 @@ export default function DetailedView({ data }: { data?: CardData | null }) {
               </Tooltip>
             </motion.div>
           )}
-          {data.config.show_contracting_info && (
+          {data.config?.show_contracting_info && (
             <motion.div
               initial={{ opacity: 0, x: 0 }}
               whileInView={{ opacity: 1, x: 0 }}
