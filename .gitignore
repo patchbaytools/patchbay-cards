@@ -20,4 +20,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local env files
-.env*.local 
+.env*.local
+
+# API Client - only keep specific models
+src/api-client/models/*
+!src/api-client/models/BusinessCardResponse.ts
