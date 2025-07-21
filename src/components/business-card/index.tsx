@@ -15,8 +15,7 @@ import { ImYoutube2 } from "react-icons/im";
 import { IoLogoInstagram } from "react-icons/io";
 import { PiTiktokLogo } from "react-icons/pi";
 
-// Types for nested objects
-console.log("test for build");
+import useMobile from "@/app/hooks/useMobile";
 
 type LinkObject =
   | {
@@ -26,6 +25,8 @@ type LinkObject =
   | undefined;
 
 const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
+  const mobile = useMobile();
+
   if (!data) {
     return <div>Card not found!</div>;
   }
@@ -102,8 +103,8 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
       shineStrength={0.1}
       borderRadius='9px'
       style={{
-        width: "473px",
-        height: "255px",
+        width: mobile ? "380px" : "473px",
+        height: mobile ? "244px" : "255px",
         borderRadius: "9px",
         padding: "18px 23px",
         flexDirection: "column",
@@ -150,13 +151,6 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
         <span className='flex w-full flex-row justify-end items-start'>
           {data?.featured_social_link ? (
             <span className='flex flex-row  gap-[7px] justify-end items-center'>
-              {/* <Image
-                src='/images/InstagramIcon.svg'
-                alt='Instagram'
-                width={10}
-                height={10}
-              /> */}
-
               {getFeaturedSocialLink()?.icon}
 
               {getFeaturedSocialLink()?.url}

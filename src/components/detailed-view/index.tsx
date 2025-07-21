@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 
 import { Tooltip } from "antd";
 
+import useMobile from "@/app/hooks/useMobile";
 import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
 
 export default function DetailedView({
@@ -14,6 +15,8 @@ export default function DetailedView({
 }: {
   data?: BusinessCardResponse | null;
 }) {
+  const mobile = useMobile();
+
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [showBioTooltip, setShowBioTooltip] = useState<undefined | true>(
@@ -139,7 +142,9 @@ export default function DetailedView({
   return (
     <div className='container h-full mx-auto px-[33px]  text-[#EDEEF0]'>
       <motion.div
-        className='grid grid-cols-2 gap-[100px] h-full'
+        className={`grid  gap-[100px] h-full ${
+          mobile ? "grid-cols-1" : "grid-cols-2"
+        }`}
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true }}

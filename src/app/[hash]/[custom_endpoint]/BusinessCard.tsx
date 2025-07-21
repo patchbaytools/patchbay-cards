@@ -7,6 +7,8 @@ import { useScroll, useSpring, motion, useTransform } from "motion/react";
 
 import { Button } from "antd";
 
+import useMobile from "@/app/hooks/useMobile";
+
 import CardTemplate from "@/components/business-card/index";
 import DetailedView from "@/components/detailed-view";
 import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
@@ -18,6 +20,7 @@ export default function BusinessCard({
   data: BusinessCardResponse | null;
   id: string;
 }) {
+  const mobile = useMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [socialsOpen, setSocialsOpen] = useState<boolean>(false);
   const { scrollYProgress } = useScroll({ container: containerRef });
@@ -33,7 +36,9 @@ export default function BusinessCard({
       ref={containerRef}
       className='h-screen overflow-auto snap-y snap-mandatory hide-scrollbar'
     >
-      <section className='h-screen w-full p-[30px] relative snap-start flex flex-col justify-between items-center'>
+      <section
+        className={`h-screen w-full ${mobile ? "px-[24px] pt-[64px]" : "p-[30px]"} relative snap-start flex flex-col justify-between items-center`}
+      >
         <motion.header
           initial={{ opacity: 0, y: -100 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,7 +61,9 @@ export default function BusinessCard({
                 window.open("https://patchbay.xyz", "_blank");
               }}
               type='primary'
-              className='bg-[#EDEEF0] text-[#000000] hover:bg-black'
+              style={{ padding: "4px 12px", height: mobile ? 48 : 40 }}
+              className={`bg-[#EDEEF0] text-[#000000] leading-[115%] hover:bg-black text-[16px]"
+              }`}
             >
               Try Patchbay Free
             </Button>
@@ -66,10 +73,10 @@ export default function BusinessCard({
               <div
                 onMouseEnter={() => setSocialsOpen(true)}
                 onMouseLeave={() => setSocialsOpen(false)}
-                className='flex flex-col justify-start items-end gap-[30px]'
+                className={`flex flex-col justify-start items-end ${mobile ? "gap-[16px]" : "gap-[30px]"} w-full`}
               >
                 <Button
-                  className='text-[24px]'
+                  className={mobile ? "text-[20px]" : "text-[24px]"}
                   type='text'
                   style={{
                     fontFamily: "var(--font-inconsolata)",
@@ -100,7 +107,11 @@ export default function BusinessCard({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        className={` font-medium hover:underline ${
+                          mobile
+                            ? "text-[16px] leading-[16px]"
+                            : "text-[19px] leading-[19px]"
+                        }`}
                         style={{
                           fontFamily: "var(--font-neue-haas-unica)",
                           color: "#EDEEF0",
@@ -122,7 +133,11 @@ export default function BusinessCard({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        className={`font-medium hover:underline ${
+                          mobile
+                            ? "text-[16px] leading-[16px]"
+                            : "text-[19px] leading-[19px]"
+                        }`}
                         style={{
                           fontFamily: "var(--font-neue-haas-unica)",
                           color: "#EDEEF0",
@@ -139,7 +154,11 @@ export default function BusinessCard({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        className={`  font-medium hover:underline ${
+                          mobile
+                            ? "text-[16px] leading-[16px]"
+                            : "text-[19px] leading-[19px]"
+                        }`}
                         style={{
                           fontFamily: "var(--font-neue-haas-unica)",
                           color: "#EDEEF0",
@@ -156,7 +175,11 @@ export default function BusinessCard({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        className={`font-medium hover:underline ${
+                          mobile
+                            ? "text-[16px] leading-[16px]"
+                            : "text-[19px] leading-[19px]"
+                        }`}
                         style={{
                           fontFamily: "var(--font-neue-haas-unica)",
                           color: "#EDEEF0",
@@ -173,7 +196,11 @@ export default function BusinessCard({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className='text-[19px] leading-[19px] font-medium hover:underline'
+                        className={`font-medium hover:underline ${
+                          mobile
+                            ? "text-[16px] leading-[16px]"
+                            : "text-[19px] leading-[19px]"
+                        }`}
                         style={{
                           fontFamily: "var(--font-neue-haas-unica)",
                           color: "#EDEEF0",
