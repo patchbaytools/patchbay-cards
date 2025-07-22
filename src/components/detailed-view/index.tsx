@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 
+import { IoCopyOutline } from "react-icons/io5";
+
 // ** Motion Imports
 import { motion } from "motion/react";
 
@@ -190,7 +192,9 @@ export default function DetailedView({
                         }}
                       >
                         <span
-                          className='text-[18px] hover:underline cursor-pointer'
+                          className={`${
+                            mobile ? "text-[16px]" : "text-[18px]"
+                          } hover:underline cursor-pointer`}
                           onClick={() => {
                             navigator.clipboard.writeText(
                               data.contact_info?.representation_contact_email ||
@@ -198,7 +202,15 @@ export default function DetailedView({
                             );
                           }}
                         >
-                          {data.contact_info.representation_contact_email}
+                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                            {data.contact_info.representation_contact_email}
+                            {mobile ? (
+                              <IoCopyOutline
+                                size={20}
+                                style={{ cursor: "pointer" }}
+                              />
+                            ) : undefined}
+                          </span>
                         </span>
                       </Tooltip>
                       <span
@@ -230,7 +242,15 @@ export default function DetailedView({
                             );
                           }}
                         >
-                          {data.contact_info.legal_contact_email}
+                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                            {data.contact_info.legal_contact_email}
+                            {mobile ? (
+                              <IoCopyOutline
+                                size={20}
+                                style={{ cursor: "pointer" }}
+                              />
+                            ) : undefined}
+                          </span>
                         </span>
                       </Tooltip>
 
@@ -256,7 +276,12 @@ export default function DetailedView({
                 className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
-                [BIO]
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [BIO]
+                  {mobile ? (
+                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                  ) : undefined}
+                </span>
               </h1>
 
               <Tooltip
@@ -278,7 +303,6 @@ export default function DetailedView({
                   style={{
                     fontFamily: "var(--font-neue-haas)",
                     lineHeight: "150%",
-                    fontSize: "18px",
                     color: "#EDEEF0",
                     height: mobile
                       ? "auto"
@@ -339,7 +363,15 @@ export default function DetailedView({
                         );
                       }}
                     >
-                      {data.songwriter_details.songwriter_name}
+                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                        {data.songwriter_details.songwriter_name}
+                        {mobile ? (
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                          />
+                        ) : undefined}
+                      </span>
                     </span>
                   </Tooltip>
 
@@ -370,7 +402,15 @@ export default function DetailedView({
                         );
                       }}
                     >
-                      {data.songwriter_details.songwriter_IPI}
+                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                        {data.songwriter_details.songwriter_IPI}
+                        {mobile ? (
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                          />
+                        ) : undefined}
+                      </span>
                     </span>
                   </Tooltip>
 
@@ -401,7 +441,15 @@ export default function DetailedView({
                         );
                       }}
                     >
-                      {data.songwriter_details.songwriter_PRO}
+                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                        {data.songwriter_details.songwriter_PRO}
+                        {mobile ? (
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                          />
+                        ) : undefined}
+                      </span>
                     </span>
                   </Tooltip>
 
@@ -428,7 +476,12 @@ export default function DetailedView({
                 className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
-                [PUB LINE]
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [PUB LINE]{" "}
+                  {mobile ? (
+                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                  ) : undefined}
+                </span>
               </h1>
               <Tooltip
                 title='Copied!'
@@ -467,7 +520,12 @@ export default function DetailedView({
                 className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
-                [CONTRACTING INFO]
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [CONTRACTING INFO]
+                  {mobile ? (
+                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                  ) : undefined}
+                </span>
               </h1>
 
               <Tooltip
