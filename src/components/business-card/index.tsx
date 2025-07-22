@@ -1,6 +1,8 @@
+"use client";
+
 // ** React/Next.js Imports
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 // ** Custom Components, Hooks, Utils, etc.
 import Card from "@/components/business-card/3DLicenseCard";
@@ -26,6 +28,10 @@ type LinkObject =
 
 const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
   const mobile = useMobile();
+
+  useEffect(() => {
+    console.log("Mobile state changed:", mobile);
+  }, [mobile]);
 
   if (!data) {
     return <div>Card not found!</div>;
@@ -100,18 +106,19 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
 
   return (
     <Card
+      key={`card-${mobile}`}
       shineStrength={0.1}
       borderRadius='9px'
       style={{
-        width: mobile ? "380px" : "473px",
-        height: mobile ? "244px" : "255px",
-        borderRadius: "9px",
-        padding: "18px 23px",
+        width: mobile ? "325px" : "473px",
+        height: mobile ? "188px" : "255px",
+        borderRadius: mobile ? "7px" : "9px",
+        padding: mobile ? "12px 16px" : "18px 23px",
         flexDirection: "column",
         alignItems: "flex-start",
         backdropFilter: "blur(25px)",
         display: "flex",
-        transition: "background-image 0.4s ease-in-out",
+        transition: "all 0.4s ease-in-out",
         position: "relative",
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/CardTexture.png')`,
         backgroundSize: "cover",
@@ -120,16 +127,18 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
       }}
     >
       <header
-        className='w-full h-[18px] grid grid-cols-3 text-white font-[var(--font-neue-haas)] '
+        key={`header-${mobile}`}
+        className='w-full grid grid-cols-3 text-white font-[var(--font-neue-haas)]'
         style={{
           color: "white",
-          fontSize: "12px",
+          fontSize: mobile ? "8px" : "12px",
+          height: "18px",
           fontWeight: "500",
-
           justifyContent: "space-between",
           alignItems: "center",
           fontFamily: "var(--font-neue-haas)",
           userSelect: "none",
+          transition: "all 0.4s ease-in-out",
         }}
       >
         <span className='flex w-full flex-row justify-start items-start'>
@@ -137,12 +146,13 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
         </span>
         <span className='flex w-full flex-row justify-center items-start'>
           {data?.location ? (
-            <span className='flex flex-row  gap-[7px]'>
+            <span className='flex flex-row gap-[7px]'>
               <Image
                 src='/images/LocationIcon.svg'
                 alt='Instagram'
-                width={7.894}
-                height={9.947}
+                width={mobile ? 5 : 7.894}
+                height={mobile ? 6 : 9.947}
+                style={{ transition: "all 0.4s ease-in-out" }}
               />
               <span>{`${data?.location}`}</span>
             </span>
@@ -150,35 +160,45 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
         </span>
         <span className='flex w-full flex-row justify-end items-start'>
           {data?.featured_social_link ? (
-            <span className='flex flex-row  gap-[7px] justify-end items-center'>
+            <span className='flex flex-row gap-[7px] justify-end items-center'>
               {getFeaturedSocialLink()?.icon}
-
               {getFeaturedSocialLink()?.url}
             </span>
           ) : undefined}
         </span>
       </header>
       <section
+        key={`section-${mobile}`}
         className='select-none h-full w-full flex flex-row justify-between space-between items-end font-[var(--font-neue-haas)]'
-        style={{ color: "white" }}
+        style={{
+          color: "white",
+          fontSize: mobile ? 30 : 50,
+          transition: "all 0.4s ease-in-out",
+        }}
       >
-        <h1 className='text-[50px] whitespace-break-spaces leading-[115%]'>
-          {data?.name}
-        </h1>
-        <div className='flex flex-col h-full w-full justify-end items-end gap-[9px] '>
+        <h1 className='whitespace-break-spaces leading-[115%]'>{data?.name}</h1>
+        <div className='flex flex-col h-full w-full justify-end items-end gap-[9px]'>
           <div className='flex flex-col items-end'>
             {data?.roles?.map((role) => (
               <div
-                className='font-[var(--font-neue-haas)] tracking-[.12px] leading-[150%] text-[12px]'
                 key={role}
+                className='font-[var(--font-neue-haas)] tracking-[.12px] leading-[150%]'
+                style={{
+                  fontSize: mobile ? "8px" : "12px",
+                  transition: "all 0.4s ease-in-out",
+                }}
               >
                 {role}
               </div>
             ))}
           </div>
           <div
-            className='relative w-[68px] h-[68px]  overflow-hidden rounded-[2px] border-[.2px] border-[#EDEEF0];
-'
+            className='relative overflow-hidden rounded-[2px] border-[.2px] border-[#EDEEF0]'
+            style={{
+              width: mobile ? "45px" : "68px",
+              height: mobile ? "45px" : "68px",
+              transition: "all 0.4s ease-in-out",
+            }}
           >
             <Image
               src={data?.profile_image_url || "/images/favicon.ico"}

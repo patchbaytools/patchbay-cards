@@ -235,7 +235,7 @@ export default function BusinessCard({
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 1 }}
-          className='absolute  top-[calc(50%-50px)] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full flex flex-col items-center justify-center max-w-md h-64 md:h-96 z-10'
+          className={`absolute  ${mobile ? "top-[calc(50%)] " : "top-[calc(50%-50px)] "}left-[50%] translate-x-[-50%] translate-y-[-50%] w-full flex flex-col items-center justify-center max-w-md h-64 md:h-96 z-10`}
         >
           <CardTemplate data={data ?? undefined} />
         </motion.div>

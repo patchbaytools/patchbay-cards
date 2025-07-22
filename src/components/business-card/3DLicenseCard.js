@@ -1,3 +1,5 @@
+"use client";
+
 // ** React/Next.js Imports
 import React from "react";
 
