@@ -193,8 +193,10 @@ export default function DetailedView({
                       >
                         <span
                           className={`${
-                            mobile ? "text-[16px]" : "text-[18px]"
-                          } hover:underline cursor-pointer`}
+                            mobile
+                              ? "text-[16px]"
+                              : "text-[18px] hover:underline cursor-pointer"
+                          } `}
                           onClick={() => {
                             navigator.clipboard.writeText(
                               data.contact_info?.representation_contact_email ||
@@ -234,8 +236,10 @@ export default function DetailedView({
                       >
                         <span
                           className={`${
-                            mobile ? "text-[16px]" : "text-[18px]"
-                          } hover:underline cursor-pointer`}
+                            mobile
+                              ? "text-[16px]"
+                              : "text-[18px] hover:underline cursor-pointer"
+                          } `}
                           onClick={() => {
                             navigator.clipboard.writeText(
                               data.contact_info?.legal_contact_email || ""
@@ -295,8 +299,10 @@ export default function DetailedView({
               >
                 <span
                   className={`${
-                    mobile ? "text-[16px]" : "text-[18px]"
-                  } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline justify-start items-start`}
+                    mobile
+                      ? "text-[16px]"
+                      : "text-[18px] hover:underline  cursor-pointer"
+                  } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar   justify-start items-start`}
                   onClick={() => {
                     navigator.clipboard.writeText(data?.bio || "");
                   }}
@@ -355,8 +361,10 @@ export default function DetailedView({
                   >
                     <span
                       className={`${
-                        mobile ? "text-[16px]" : "text-[18px]"
-                      } hover:underline cursor-pointer`}
+                        mobile
+                          ? "text-[16px]"
+                          : "text-[18px] hover:underline cursor-pointer"
+                      } `}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_name || ""
@@ -394,8 +402,10 @@ export default function DetailedView({
                   >
                     <span
                       className={`${
-                        mobile ? "text-[16px]" : "text-[18px]"
-                      } hover:underline cursor-pointer`}
+                        mobile
+                          ? "text-[16px]"
+                          : "text-[18px] hover:underline cursor-pointer"
+                      } `}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_IPI || ""
@@ -433,8 +443,10 @@ export default function DetailedView({
                   >
                     <span
                       className={`${
-                        mobile ? "text-[16px]" : "text-[18px]"
-                      } hover:underline cursor-pointer`}
+                        mobile
+                          ? "text-[16px]"
+                          : "text-[18px] hover:underline cursor-pointer"
+                      } `}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_PRO || ""
@@ -494,8 +506,10 @@ export default function DetailedView({
               >
                 <span
                   className={`${
-                    mobile ? "text-[16px]" : "text-[18px]"
-                  } w-full hover:underline cursor-pointer flex flex-col justify-start items-start`}
+                    mobile
+                      ? "text-[16px]"
+                      : "text-[18px] hover:underline cursor-pointer"
+                  } w-full  flex flex-col justify-start items-start`}
                   onClick={() => {
                     navigator.clipboard.writeText(data.pub_line || "");
                   }}
@@ -523,7 +537,41 @@ export default function DetailedView({
                 <span className='flex flex-row justify-start items-center gap-[16px]'>
                   [CONTRACTING INFO]
                   {mobile ? (
-                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='topLeft'
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            (data.contracting_info?.address.name
+                              ? data.contracting_info?.address.name + ", "
+                              : "") +
+                              (data.contracting_info?.care_of
+                                ? "c/o " + data.contracting_info?.care_of + ", "
+                                : "") +
+                              (data.contracting_info?.address.address_line_1 ||
+                                "") +
+                              ", " +
+                              (data.contracting_info?.address.address_line_2
+                                ? data.contracting_info?.address
+                                    .address_line_2 + ", "
+                                : "") +
+                              (data.contracting_info?.address.city || "") +
+                              ", " +
+                              (data.contracting_info?.address.state || "") +
+                              " " +
+                              (data.contracting_info?.address.postal_code ||
+                                "") +
+                              ", " +
+                              (data.contracting_info?.address.country || "")
+                          );
+                        }}
+                      />
+                    </Tooltip>
                   ) : undefined}
                 </span>
               </h1>
@@ -538,8 +586,10 @@ export default function DetailedView({
                 }}
               >
                 <section
-                  className={` flex   leading-[150%] w-full flex-col justify-start items-start hover:underline cursor-pointer ${
-                    mobile ? "text-[16px] mb-[24px]" : "text-[18px]"
+                  className={` flex   leading-[150%] w-full flex-col justify-start items-start  ${
+                    mobile
+                      ? "text-[16px] mb-[24px]"
+                      : "text-[18px] hover:underline cursor-pointer"
                   }`}
                   onClick={() => {
                     navigator.clipboard.writeText(
