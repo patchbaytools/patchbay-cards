@@ -255,7 +255,9 @@ export default function BusinessCard({
           →
         </div>
       </section>
-      <section className='h-screen p-[30px] w-full bg-gray-50 dark:bg-gray-900 snap-start'>
+      <section
+        className={`h-screen ${mobile ? "p-[24px] overflow-y-scroll" : "p-[30px]"} w-full bg-gray-50 dark:bg-gray-900 snap-start`}
+      >
         <DetailedView data={data} />
       </section>
     </div>

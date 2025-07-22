@@ -140,17 +140,23 @@ export default function DetailedView({
     },
   };
   return (
-    <div className='container h-full mx-auto px-[33px]  text-[#EDEEF0]'>
+    <div
+      className={`container h-full mx-auto ${mobile ? "" : "px-[33px]"}  text-[#EDEEF0]`}
+    >
       <motion.div
-        className={`grid  gap-[100px] h-full ${
-          mobile ? "grid-cols-1" : "grid-cols-2"
+        className={`grid   h-full ${
+          mobile ? "grid-cols-1 gap-[80px]" : "grid-cols-2 gap-[100px]"
         }`}
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true }}
         variants={containerVariants}
       >
-        <section className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'>
+        <section
+          className={`h-full w-full flex flex-col justify-start items-start ${
+            mobile ? "gap-[80px]" : "gap-[60px]"
+          } select-none`}
+        >
           {data.contact_info &&
             (data.contact_info.representation_contact_email ||
               data.contact_info.legal_contact_email) && (
@@ -161,7 +167,9 @@ export default function DetailedView({
                 className='w-full  gap-[16px] flex flex-col justify-start items-start'
               >
                 <h1
-                  className='text-[24px] text-[#EDEEF0]'
+                  className={` text-[#EDEEF0] ${
+                    mobile ? "text-[20px]" : "text-[24px]"
+                  }`}
                   style={{ fontFamily: "var(--font-inconsolata)" }}
                 >
                   [CONTACT]
@@ -194,7 +202,7 @@ export default function DetailedView({
                         </span>
                       </Tooltip>
                       <span
-                        className='text-[18px] '
+                        className={mobile ? "text-[16px]" : "text-[18px]"}
                         style={{ color: "rgba(255, 255, 255, 0.50" }}
                       >
                         Representation
@@ -213,7 +221,9 @@ export default function DetailedView({
                         }}
                       >
                         <span
-                          className='text-[18px] hover:underline cursor-pointer'
+                          className={`${
+                            mobile ? "text-[16px]" : "text-[18px]"
+                          } hover:underline cursor-pointer`}
                           onClick={() => {
                             navigator.clipboard.writeText(
                               data.contact_info?.legal_contact_email || ""
@@ -225,7 +235,7 @@ export default function DetailedView({
                       </Tooltip>
 
                       <span
-                        className='text-[18px] '
+                        className={mobile ? "text-[16px]" : "text-[18px]"}
                         style={{ color: "rgba(255, 255, 255, 0.50" }}
                       >
                         Legal
@@ -243,7 +253,7 @@ export default function DetailedView({
               className='w-full h-full  gap-[16px] flex flex-col justify-start items-start'
             >
               <h1
-                className='text-[24px]'
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
                 [BIO]
@@ -259,7 +269,9 @@ export default function DetailedView({
                 }}
               >
                 <span
-                  className='text-[18px] gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline justify-start items-start'
+                  className={`${
+                    mobile ? "text-[16px]" : "text-[18px]"
+                  } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar cursor-pointer hover:underline justify-start items-start`}
                   onClick={() => {
                     navigator.clipboard.writeText(data?.bio || "");
                   }}
@@ -268,7 +280,9 @@ export default function DetailedView({
                     lineHeight: "150%",
                     fontSize: "18px",
                     color: "#EDEEF0",
-                    height: `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
+                    height: mobile
+                      ? "auto"
+                      : `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
                   }}
                 >
                   {data.bio.split("\n").map((line) => (
@@ -282,7 +296,9 @@ export default function DetailedView({
           )}
         </section>
         <section
-          className='h-full w-full flex flex-col justify-start items-start gap-[88px] select-none'
+          className={`h-full w-full flex flex-col justify-start items-start ${
+            mobile ? "gap-[80px]" : "gap-[60px]"
+          } select-none`}
           style={{ fontFamily: "var(--font-neue-haas)" }}
         >
           {data.songwriter_details && (
@@ -293,14 +309,14 @@ export default function DetailedView({
               className='w-full  gap-[16px] flex flex-col justify-start items-start'
             >
               <h1
-                className='text-[24px]'
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
                 [SONGWRITER INFO]
               </h1>
 
               <section
-                className='w-full flex flex-row justify-between items-start '
+                className={`w-full flex ${mobile ? "flex-col justify-start items-start gap-[30px]" : "flex-row justify-between items-start"} `}
                 style={{ fontFamily: "var(--font-neue-haas)" }}
               >
                 <div className='flex flex-col '>
@@ -314,7 +330,9 @@ export default function DetailedView({
                     }}
                   >
                     <span
-                      className='text-[18px] hover:underline cursor-pointer'
+                      className={`${
+                        mobile ? "text-[16px]" : "text-[18px]"
+                      } hover:underline cursor-pointer`}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_name || ""
@@ -326,7 +344,7 @@ export default function DetailedView({
                   </Tooltip>
 
                   <span
-                    className='text-[18px] '
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
                     style={{ color: "rgba(255, 255, 255, 0.50" }}
                   >
                     Legal Name
@@ -343,7 +361,9 @@ export default function DetailedView({
                     }}
                   >
                     <span
-                      className='text-[18px] hover:underline cursor-pointer'
+                      className={`${
+                        mobile ? "text-[16px]" : "text-[18px]"
+                      } hover:underline cursor-pointer`}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_IPI || ""
@@ -355,7 +375,7 @@ export default function DetailedView({
                   </Tooltip>
 
                   <span
-                    className='text-[18px] '
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
                     style={{ color: "rgba(255, 255, 255, 0.50" }}
                   >
                     IPI
@@ -372,7 +392,9 @@ export default function DetailedView({
                     }}
                   >
                     <span
-                      className='text-[18px] hover:underline cursor-pointer'
+                      className={`${
+                        mobile ? "text-[16px]" : "text-[18px]"
+                      } hover:underline cursor-pointer`}
                       onClick={() => {
                         navigator.clipboard.writeText(
                           data.songwriter_details?.songwriter_PRO || ""
@@ -384,7 +406,7 @@ export default function DetailedView({
                   </Tooltip>
 
                   <span
-                    className='text-[18px] '
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
                     style={{ color: "rgba(255, 255, 255, 0.50" }}
                   >
                     PRO
@@ -398,10 +420,12 @@ export default function DetailedView({
               initial={{ opacity: 0, x: 0 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+              className={
+                "w-full  gap-[16px] flex flex-col justify-start items-start"
+              }
             >
               <h1
-                className='text-[24px]'
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
                 [PUB LINE]
@@ -416,7 +440,9 @@ export default function DetailedView({
                 }}
               >
                 <span
-                  className='text-[18px] w-full hover:underline cursor-pointer flex flex-col justify-start items-start'
+                  className={`${
+                    mobile ? "text-[16px]" : "text-[18px]"
+                  } w-full hover:underline cursor-pointer flex flex-col justify-start items-start`}
                   onClick={() => {
                     navigator.clipboard.writeText(data.pub_line || "");
                   }}
@@ -438,7 +464,7 @@ export default function DetailedView({
               className='w-full  gap-[16px] flex flex-col justify-start items-start'
             >
               <h1
-                className='text-[24px]'
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
                 [CONTRACTING INFO]
@@ -454,7 +480,9 @@ export default function DetailedView({
                 }}
               >
                 <section
-                  className=' flex  text-[18px] leading-[150%] w-full flex-col justify-start items-start hover:underline cursor-pointer'
+                  className={` flex   leading-[150%] w-full flex-col justify-start items-start hover:underline cursor-pointer ${
+                    mobile ? "text-[16px] mb-[24px]" : "text-[18px]"
+                  }`}
                   onClick={() => {
                     navigator.clipboard.writeText(
                       (data.contracting_info?.address.name
@@ -504,6 +532,7 @@ export default function DetailedView({
                   )}
                 </section>
               </Tooltip>
+              {/* <h1>Powered by patchbay</h1> */}
             </motion.div>
           )}
         </section>
