@@ -19,116 +19,6 @@ export default function DetailedView({
 }) {
   const mobile = useMobile();
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const [showBioTooltip, setShowBioTooltip] = useState<undefined | true>(
-    undefined
-  );
-
-  const [showPubLineTooltip, setShowPubLineTooltip] = useState<
-    undefined | true
-  >(undefined);
-
-  const [showContractingInfoTooltip, setShowContractingInfoTooltip] = useState<
-    undefined | true
-  >(undefined);
-
-  const [showRepresentationTooltip, setShowRepresentationTooltip] = useState<
-    undefined | true
-  >(undefined);
-
-  const [showLegalTooltip, setShowLegalTooltip] = useState<undefined | true>(
-    undefined
-  );
-
-  const [showLegalNameTooltip, setShowLegalNameTooltip] = useState<
-    undefined | true
-  >(undefined);
-
-  const [showIPITooltip, setShowIPITooltip] = useState<undefined | true>(
-    undefined
-  );
-
-  const [showPROTooltip, setShowPROTooltip] = useState<undefined | true>(
-    undefined
-  );
-
-  // Tooltip timeout logic
-  useEffect(() => {
-    if (showBioTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowBioTooltip(undefined);
-      }, 1000);
-    } else if (showPubLineTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowPubLineTooltip(undefined);
-      }, 1000);
-    } else if (showContractingInfoTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowContractingInfoTooltip(undefined);
-      }, 1000);
-    } else if (showRepresentationTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowRepresentationTooltip(undefined);
-      }, 1000);
-    } else if (showLegalTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowLegalTooltip(undefined);
-      }, 1000);
-    } else if (showLegalNameTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowLegalNameTooltip(undefined);
-      }, 1000);
-    } else if (showIPITooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowIPITooltip(undefined);
-      }, 1000);
-    } else if (showPROTooltip) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setShowPROTooltip(undefined);
-      }, 1000);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [
-    showBioTooltip,
-    showPubLineTooltip,
-    showContractingInfoTooltip,
-    showRepresentationTooltip,
-    showLegalTooltip,
-    showLegalNameTooltip,
-    showIPITooltip,
-    showPROTooltip,
-  ]);
-
   if (!data) return null;
 
   const containerVariants = {
@@ -182,39 +72,50 @@ export default function DetailedView({
                 >
                   {data.config?.show_representation && (
                     <div className='flex flex-col '>
-                      <Tooltip
-                        title='Copied!'
-                        trigger={["click"]}
-                        placement='top'
-                        open={showRepresentationTooltip}
-                        onOpenChange={(open) => {
-                          setShowRepresentationTooltip(true);
+                      <span
+                        className={`${
+                          mobile
+                            ? "text-[16px]"
+                            : "text-[18px] hover:underline cursor-pointer"
+                        } `}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            data.contact_info?.representation_contact_email ||
+                              ""
+                          );
                         }}
                       >
-                        <span
-                          className={`${
-                            mobile
-                              ? "text-[16px]"
-                              : "text-[18px] hover:underline cursor-pointer"
-                          } `}
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              data.contact_info?.representation_contact_email ||
-                                ""
-                            );
-                          }}
-                        >
-                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                        <span className='flex flex-row justify-start items-end gap-[16px]'>
+                          <Tooltip
+                            title='Copied!'
+                            trigger={["click"]}
+                            placement='top'
+                            open={!mobile ? undefined : false}
+                          >
                             {data.contact_info.representation_contact_email}
-                            {mobile ? (
+                          </Tooltip>
+                          {mobile ? (
+                            <Tooltip
+                              title='Copied!'
+                              trigger={["click"]}
+                              placement='top'
+                              open={mobile ? undefined : false}
+                            >
                               <IoCopyOutline
                                 size={20}
                                 style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  navigator.clipboard.writeText(
+                                    data.contact_info
+                                      ?.representation_contact_email || ""
+                                  );
+                                }}
                               />
-                            ) : undefined}
-                          </span>
+                            </Tooltip>
+                          ) : undefined}
                         </span>
-                      </Tooltip>
+                      </span>
+
                       <span
                         className={mobile ? "text-[16px]" : "text-[18px]"}
                         style={{ color: "rgba(255, 255, 255, 0.50" }}
@@ -225,38 +126,47 @@ export default function DetailedView({
                   )}
                   {data.config?.show_legal && (
                     <div className='flex flex-col '>
-                      <Tooltip
-                        title='Copied!'
-                        trigger={["click"]}
-                        placement='top'
-                        open={showLegalTooltip}
-                        onOpenChange={(open) => {
-                          setShowLegalTooltip(true);
+                      <span
+                        className={`${
+                          mobile
+                            ? "text-[16px]"
+                            : "text-[18px] hover:underline cursor-pointer"
+                        } `}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            data.contact_info?.legal_contact_email || ""
+                          );
                         }}
                       >
-                        <span
-                          className={`${
-                            mobile
-                              ? "text-[16px]"
-                              : "text-[18px] hover:underline cursor-pointer"
-                          } `}
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              data.contact_info?.legal_contact_email || ""
-                            );
-                          }}
-                        >
-                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                        <span className='flex flex-row justify-start items-end gap-[16px]'>
+                          <Tooltip
+                            title='Copied!'
+                            trigger={["click"]}
+                            placement='top'
+                            open={!mobile ? undefined : false}
+                          >
                             {data.contact_info.legal_contact_email}
-                            {mobile ? (
+                          </Tooltip>
+                          {mobile ? (
+                            <Tooltip
+                              title='Copied!'
+                              trigger={["click"]}
+                              placement='top'
+                              open={mobile ? undefined : false}
+                            >
                               <IoCopyOutline
                                 size={20}
                                 style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  navigator.clipboard.writeText(
+                                    data.contact_info?.legal_contact_email || ""
+                                  );
+                                }}
                               />
-                            ) : undefined}
-                          </span>
+                            </Tooltip>
+                          ) : undefined}
                         </span>
-                      </Tooltip>
+                      </span>
 
                       <span
                         className={mobile ? "text-[16px]" : "text-[18px]"}
@@ -283,45 +193,55 @@ export default function DetailedView({
                 <span className='flex flex-row justify-start items-center gap-[16px]'>
                   [BIO]
                   {mobile ? (
-                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='top'
+                      open={mobile ? undefined : false}
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(data?.bio || "");
+                        }}
+                      />
+                    </Tooltip>
                   ) : undefined}
                 </span>
               </h1>
 
-              <Tooltip
-                title='Copied!'
-                trigger={["click"]}
-                placement='top'
-                open={showBioTooltip}
-                onOpenChange={(open) => {
-                  setShowBioTooltip(true);
+              <span
+                className={`${
+                  mobile
+                    ? "text-[16px]"
+                    : "text-[18px] hover:underline  cursor-pointer"
+                } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar   justify-start items-start`}
+                onClick={() => {
+                  navigator.clipboard.writeText(data?.bio || "");
+                }}
+                style={{
+                  fontFamily: "var(--font-neue-haas)",
+                  lineHeight: "150%",
+                  color: "#EDEEF0",
+                  height: mobile
+                    ? "auto"
+                    : `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
                 }}
               >
-                <span
-                  className={`${
-                    mobile
-                      ? "text-[16px]"
-                      : "text-[18px] hover:underline  cursor-pointer"
-                  } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar   justify-start items-start`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(data?.bio || "");
-                  }}
-                  style={{
-                    fontFamily: "var(--font-neue-haas)",
-                    lineHeight: "150%",
-                    color: "#EDEEF0",
-                    height: mobile
-                      ? "auto"
-                      : `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
-                  }}
+                <Tooltip
+                  title='Copied!'
+                  trigger={["click"]}
+                  placement='top'
+                  open={!mobile ? undefined : false}
                 >
                   {data.bio.split("\n").map((line) => (
                     <span key={line} className='w-full'>
                       {line}
                     </span>
                   ))}
-                </span>
-              </Tooltip>
+                </Tooltip>
+              </span>
             </motion.div>
           )}
         </section>
@@ -350,38 +270,47 @@ export default function DetailedView({
                 style={{ fontFamily: "var(--font-neue-haas)" }}
               >
                 <div className='flex flex-col '>
-                  <Tooltip
-                    title='Copied!'
-                    trigger={["click"]}
-                    placement='top'
-                    open={showLegalNameTooltip}
-                    onOpenChange={(open) => {
-                      setShowLegalNameTooltip(true);
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_name || ""
+                      );
                     }}
                   >
-                    <span
-                      className={`${
-                        mobile
-                          ? "text-[16px]"
-                          : "text-[18px] hover:underline cursor-pointer"
-                      } `}
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          data.songwriter_details?.songwriter_name || ""
-                        );
-                      }}
-                    >
-                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
                         {data.songwriter_details.songwriter_name}
-                        {mobile ? (
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
                           <IoCopyOutline
                             size={20}
                             style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_name || ""
+                              );
+                            }}
                           />
-                        ) : undefined}
-                      </span>
+                        </Tooltip>
+                      ) : undefined}
                     </span>
-                  </Tooltip>
+                  </span>
 
                   <span
                     className={mobile ? "text-[16px]" : "text-[18px]"}
@@ -391,38 +320,47 @@ export default function DetailedView({
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <Tooltip
-                    title='Copied!'
-                    trigger={["click"]}
-                    placement='top'
-                    open={showLegalTooltip}
-                    onOpenChange={(open) => {
-                      setShowIPITooltip(true);
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_IPI || ""
+                      );
                     }}
                   >
-                    <span
-                      className={`${
-                        mobile
-                          ? "text-[16px]"
-                          : "text-[18px] hover:underline cursor-pointer"
-                      } `}
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          data.songwriter_details?.songwriter_IPI || ""
-                        );
-                      }}
-                    >
-                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
                         {data.songwriter_details.songwriter_IPI}
-                        {mobile ? (
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
                           <IoCopyOutline
                             size={20}
                             style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_IPI || ""
+                              );
+                            }}
                           />
-                        ) : undefined}
-                      </span>
+                        </Tooltip>
+                      ) : undefined}
                     </span>
-                  </Tooltip>
+                  </span>
 
                   <span
                     className={mobile ? "text-[16px]" : "text-[18px]"}
@@ -432,38 +370,47 @@ export default function DetailedView({
                   </span>
                 </div>
                 <div className='flex flex-col '>
-                  <Tooltip
-                    title='Copied!'
-                    trigger={["click"]}
-                    placement='top'
-                    open={showPROTooltip}
-                    onOpenChange={(open) => {
-                      setShowPROTooltip(true);
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_PRO || ""
+                      );
                     }}
                   >
-                    <span
-                      className={`${
-                        mobile
-                          ? "text-[16px]"
-                          : "text-[18px] hover:underline cursor-pointer"
-                      } `}
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          data.songwriter_details?.songwriter_PRO || ""
-                        );
-                      }}
-                    >
-                      <span className='flex flex-row justify-start items-end gap-[16px]'>
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
                         {data.songwriter_details.songwriter_PRO}
-                        {mobile ? (
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
                           <IoCopyOutline
                             size={20}
                             style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_PRO || ""
+                              );
+                            }}
                           />
-                        ) : undefined}
-                      </span>
+                        </Tooltip>
+                      ) : undefined}
                     </span>
-                  </Tooltip>
+                  </span>
 
                   <span
                     className={mobile ? "text-[16px]" : "text-[18px]"}
@@ -489,38 +436,49 @@ export default function DetailedView({
                 style={{ fontFamily: "var(--font-inconsolata)" }}
               >
                 <span className='flex flex-row justify-start items-center gap-[16px]'>
-                  [PUB LINE]{" "}
+                  [PUB LINE]
                   {mobile ? (
-                    <IoCopyOutline size={20} style={{ cursor: "pointer" }} />
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='top'
+                      open={mobile ? undefined : false}
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(data.pub_line || "");
+                        }}
+                      />
+                    </Tooltip>
                   ) : undefined}
                 </span>
               </h1>
-              <Tooltip
-                title='Copied!'
-                trigger={["click"]}
-                placement='top'
-                open={showPubLineTooltip}
-                onOpenChange={(open) => {
-                  setShowPubLineTooltip(true);
+
+              <span
+                className={`${
+                  mobile
+                    ? "text-[16px]"
+                    : "text-[18px] hover:underline cursor-pointer"
+                } w-full  flex flex-col justify-start items-start`}
+                onClick={() => {
+                  navigator.clipboard.writeText(data.pub_line || "");
                 }}
               >
-                <span
-                  className={`${
-                    mobile
-                      ? "text-[16px]"
-                      : "text-[18px] hover:underline cursor-pointer"
-                  } w-full  flex flex-col justify-start items-start`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(data.pub_line || "");
-                  }}
+                <Tooltip
+                  title='Copied!'
+                  trigger={["click"]}
+                  placement='top'
+                  open={!mobile ? undefined : false}
                 >
                   {data.pub_line?.split("\n").map((line) => (
                     <span key={line} className='w-full'>
                       {line}
                     </span>
                   ))}
-                </span>
-              </Tooltip>
+                </Tooltip>
+              </span>
             </motion.div>
           )}
           {data.config?.show_contracting_info && (
@@ -541,6 +499,7 @@ export default function DetailedView({
                       title='Copied!'
                       trigger={["click"]}
                       placement='topLeft'
+                      open={mobile ? undefined : false}
                     >
                       <IoCopyOutline
                         size={20}
@@ -580,10 +539,7 @@ export default function DetailedView({
                 title='Copied!'
                 trigger={["click"]}
                 placement='topLeft'
-                open={showContractingInfoTooltip}
-                onOpenChange={(open) => {
-                  setShowContractingInfoTooltip(true);
-                }}
+                open={!mobile ? undefined : false}
               >
                 <section
                   className={` flex   leading-[150%] w-full flex-col justify-start items-start  ${
