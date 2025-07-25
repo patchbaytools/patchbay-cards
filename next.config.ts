@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   // Configure external image domains for Next.js Image component
   images: {
-    domains: ["i.scdn.co"], // Allow Spotify CDN images
+    domains: ["i.scdn.co", "storage.googleapis.com"],
   },
 };
 
