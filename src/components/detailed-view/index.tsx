@@ -239,11 +239,13 @@ export default function DetailedView({
                   placement='top'
                   open={!mobile ? undefined : false}
                 >
-                  {data.bio.split("\n").map((line) => (
-                    <span key={line} className='w-full'>
-                      {line}
-                    </span>
-                  ))}
+                  <span className='w-full flex flex-col justify-start items-start gap-[8px]'>
+                    {data.bio.split("\n").map((line) => (
+                      <span key={line} className='w-full'>
+                        {line}
+                      </span>
+                    ))}
+                  </span>
                 </Tooltip>
               </span>
             </motion.div>
