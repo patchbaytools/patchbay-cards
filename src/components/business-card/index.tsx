@@ -54,15 +54,18 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
         return linkObject;
 
       case FeaturedSocialLinkChoices.YOUTUBE:
-        const youtubeChunks = data?.url_youtube?.split("/");
-        const youtubeHandle = youtubeChunks
-          ? "@" + youtubeChunks[youtubeChunks.length - 1]
+        const youtubeUsername = data?.url_youtube
+          ?.split("/@")[1]
+          ?.split("/")[0];
+
+        const youtubeHandle = youtubeUsername
+          ? "@" + youtubeUsername
           : undefined;
 
         linkObject = {
           url: youtubeHandle,
           icon: youtubeHandle ? (
-            <ImYoutube2 style={{ height: 10, width: 10 }} />
+            <ImYoutube2 style={{ height: 14, width: 14 }} />
           ) : undefined,
         };
         return linkObject;
@@ -94,7 +97,7 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
         linkObject = {
           url: data?.url_website?.split("//")[1].split("/")[0] ?? undefined,
           icon: data?.url_website ? (
-            <BiWorld style={{ height: 10, width: 10 }} />
+            <BiWorld style={{ height: 11, width: 11 }} />
           ) : undefined,
         };
         return linkObject;
@@ -128,7 +131,7 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
     >
       <header
         key={`header-${mobile}`}
-        className='w-full grid grid-cols-3 text-white font-[var(--font-neue-haas)]'
+        className='w-full flex flex-row justify-between items-start text-white font-[var(--font-neue-haas)]'
         style={{
           color: "white",
           fontSize: mobile ? "8px" : "12px",
@@ -141,31 +144,35 @@ const CardTemplate = ({ data }: { data?: BusinessCardResponse }) => {
           transition: "all 0.4s ease-in-out",
         }}
       >
-        <span className='flex w-full flex-row justify-start items-start'>
-          {data?.songwriter_details?.songwriter_name ?? undefined}
-        </span>
-        <span className='flex w-full flex-row justify-center items-start'>
+        {data?.config?.show_songwriter_details && (
+          <span className='flex  flex-row  items-start'>
+            {data?.songwriter_details?.songwriter_name ?? undefined}
+          </span>
+        )}
+        <span className='flex  flex-row  items-start'>
           {data?.location ? (
-            <span className='flex flex-row gap-[7px]'>
+            <span className='flex flex-row gap-[7px] items-center max-w-full'>
               <Image
                 src='/images/LocationIcon.svg'
                 alt='Instagram'
                 width={mobile ? 5 : 7.894}
                 height={mobile ? 6 : 9.947}
-                style={{ transition: "all 0.4s ease-in-out" }}
+                style={{ transition: "all 0.4s ease-in-out", flexShrink: 0 }}
               />
-              <span>{`${data?.location}`}</span>
+              <span className='whitespace-nowrap text-ellipsis overflow-hidden'>{`${data?.location.split(",")[0]}, ${data?.location.split(",")[1]}`}</span>
             </span>
           ) : undefined}
         </span>
-        <span className='flex w-full flex-row justify-end items-start'>
-          {data?.featured_social_link ? (
-            <span className='flex flex-row gap-[7px] justify-end items-center'>
-              {getFeaturedSocialLink()?.icon}
-              {getFeaturedSocialLink()?.url}
-            </span>
-          ) : undefined}
-        </span>
+        {data?.config?.show_socials_section && (
+          <span className='flex  flex-row  items-start'>
+            {data?.featured_social_link ? (
+              <span className='flex flex-row gap-[7px] justify-end items-center'>
+                {getFeaturedSocialLink()?.icon}
+                {getFeaturedSocialLink()?.url}
+              </span>
+            ) : undefined}
+          </span>
+        )}
       </header>
       <section
         key={`section-${mobile}`}

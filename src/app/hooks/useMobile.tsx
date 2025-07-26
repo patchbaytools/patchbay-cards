@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-const useMobile = () => {
+const useMobile = (mobileBreakpoint = 600) => {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 600px)");
+    const media = window.matchMedia(`(max-width: ${mobileBreakpoint}px)`);
     const updateMatch = () => setMatches(media.matches);
 
     // Set initial value
@@ -15,7 +15,7 @@ const useMobile = () => {
 
     // Cleanup
     return () => media.removeEventListener("change", updateMatch);
-  }, []);
+  }, [mobileBreakpoint]);
 
   return matches;
 };

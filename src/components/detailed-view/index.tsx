@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 import { IoCopyOutline } from "react-icons/io5";
+import Image from "next/image";
 
 // ** Motion Imports
 import { motion } from "motion/react";
@@ -18,7 +19,7 @@ export default function DetailedView({
   data?: BusinessCardResponse | null;
 }) {
   const mobile = useMobile();
-
+  const medium = useMobile(812);
   if (!data) return null;
 
   const containerVariants = {
@@ -33,7 +34,7 @@ export default function DetailedView({
   };
   return (
     <div
-      className={`container h-full mx-auto ${mobile ? "" : "px-[33px]"}  text-[#EDEEF0]`}
+      className={`container h-full mx-auto ${mobile ? "" : "px-[33px] pb-[30px]"}  text-[#EDEEF0]`}
     >
       <motion.div
         className={`grid   h-full ${
@@ -269,7 +270,7 @@ export default function DetailedView({
               </h1>
 
               <section
-                className={`w-full flex ${mobile ? "flex-col justify-start items-start gap-[30px]" : "flex-row justify-between items-start"} `}
+                className={`w-full flex ${mobile || medium ? "flex-col justify-start items-start gap-[30px]" : "flex-row justify-between items-start"} `}
                 style={{ fontFamily: "var(--font-neue-haas)" }}
               >
                 <div className='flex flex-col '>
@@ -599,11 +600,55 @@ export default function DetailedView({
                   )}
                 </section>
               </Tooltip>
-              {/* <h1>Powered by patchbay</h1> */}
             </motion.div>
+          )}
+          {mobile && (
+            <motion.footer
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                marginBottom: 24,
+                userSelect: "none",
+              }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image
+                src='/images/poweredbypatchbay.png'
+                alt='Patchbay Logo'
+                width={177}
+                height={14}
+              />
+            </motion.footer>
           )}
         </section>
       </motion.div>
+      {!mobile && (
+        <motion.footer
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            userSelect: "none",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Image
+            src='/images/poweredbypatchbay.png'
+            alt='Patchbay Logo'
+            width={177}
+            height={14}
+          />
+        </motion.footer>
+      )}
     </div>
   );
 }

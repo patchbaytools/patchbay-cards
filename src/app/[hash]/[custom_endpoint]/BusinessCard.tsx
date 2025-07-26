@@ -61,7 +61,7 @@ export default function BusinessCard({
                 window.open("https://patchbay.xyz", "_blank");
               }}
               type='primary'
-              style={{ padding: "4px 12px", height: mobile ? 48 : 40 }}
+              style={{ padding: "4px 12px", height: 48 }}
               className={`bg-[#EDEEF0] text-[#000000] leading-[115%] hover:bg-black text-[16px]"
               }`}
             >
