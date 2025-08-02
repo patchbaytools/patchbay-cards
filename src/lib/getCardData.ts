@@ -2,6 +2,14 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
+import { 
+  getCachedEnvironment, 
+  setCachedEnvironment, 
+  removeCachedEnvironment,
+  fetchWithTimeout, 
+} from "@/lib/cache";
+import { REQUEST_TIMEOUT } from "@/utils/constants";
+
 import type { BusinessCardResponse } from "./BusinessCardResponse";
 
 export async function getCardData(
@@ -18,54 +26,69 @@ export async function getCardData(
     console.error("Invalid parameters provided");
     redirect("https://patchbay.xyz");
   }
+  
+  // Check cache first - if we know which environment has this data
+  const cachedEnv = getCachedEnvironment(hash, custom_endpoint);
+  if (cachedEnv) {
+    const apiUrl = cachedEnv === 'prod' 
+      ? process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL
+      : process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL;
+    
+    if (!apiUrl) {
+      console.error(`API URL not set for ${cachedEnv} environment`);
+      redirect("https://patchbay.xyz");
+    }
 
-  // Determine which API URL to use based on environment
-  const isProduction = process.env.NODE_ENV === "production";
-  const apiUrl = isProduction 
-    ? process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL
-    : process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL;
+    const url = `${apiUrl}/api/v1/card/public/${custom_endpoint}/${hash}`;
 
-  // Type guard for environment variable - CHECK BEFORE URL CONSTRUCTION
-  if (!apiUrl) {
-    console.error(
-      `API URL not set for ${isProduction ? 'production' : 'staging'} environment`
-    );
-    redirect("https://patchbay.xyz");
+    try {
+      const res = await fetchWithTimeout(url, REQUEST_TIMEOUT);
+      if (res.ok) {
+        const data = await res.json() as BusinessCardResponse;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          return data;
+        }
+      }
+    } catch (error) {
+      console.error(`[API Error] Cached environment failed:`, error);
+    }
+    
+    // If cached environment failed, remove from cache and try both
+    removeCachedEnvironment(hash, custom_endpoint);
   }
 
-  const url = `${apiUrl}/api/v1/card/public/${hash}/${custom_endpoint}`;
+  // Try prod first
+  const prodUrl = `${process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
   
   try {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      console.error(`[API Error] Request failed with status: ${res.status}`);
-      console.error(`[API Error] Failed URL: ${url}`);
-      
-      // Try to get error details from response
-      try {
-        const errorData = await res.text();
-        console.error(`[API Error] Response body: ${errorData}`);
-      } catch (e) {
-        console.error(`[API Error] Could not read error response: ${String(e)}`);
+    const prodRes = await fetchWithTimeout(prodUrl, REQUEST_TIMEOUT);
+    if (prodRes.ok) {
+      const data = await prodRes.json() as BusinessCardResponse;
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        setCachedEnvironment(hash, custom_endpoint, 'prod');
+        return data;
       }
-      
-      redirect("https://patchbay.xyz");
     }
-
-    const data = (await res.json()) as BusinessCardResponse;
-
-    // Enhanced type guard for response data
-    if (!data || typeof data !== "object" || Array.isArray(data)) {
-      console.error("[API Error] Invalid response format:", data);
-      redirect("https://patchbay.xyz");
-    }
-
-    return data;
   } catch (error) {
-    console.error(`[API Error] Fetch failed:`, error);
-    console.error(`[API Error] URL: ${url}`);
-    
-    redirect("https://patchbay.xyz");
+    console.error(`[API Error] Prod lookup failed:`, error);
   }
+
+  // Try staging if prod doesn't have it
+  const stagingUrl = `${process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
+  
+  try {
+    const stagingRes = await fetchWithTimeout(stagingUrl, REQUEST_TIMEOUT);
+    if (stagingRes.ok) {
+      const data = await stagingRes.json() as BusinessCardResponse;
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        setCachedEnvironment(hash, custom_endpoint, 'staging');
+        return data;
+      }
+    }
+  } catch (error) {
+    console.error(`[API Error] Staging lookup failed:`, error);
+  }
+
+  // Neither environment has the data
+  redirect("https://patchbay.xyz");
 }
