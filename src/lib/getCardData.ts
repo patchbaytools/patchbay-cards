@@ -27,7 +27,7 @@ export async function getCardData(
     redirect("https://patchbay.xyz");
   }
 
-  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${hash}/${custom_endpoint}`;
+  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
 
   const res = await fetch(url);
   if (!res.ok) {
