@@ -19,9 +19,7 @@ export async function getCardData(
     redirect("https://patchbay.xyz");
   }
 
-  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
-
-  // Type guard for environment variable
+  // Type guard for environment variable - CHECK BEFORE URL CONSTRUCTION
   if (!process.env.NEXT_PUBLIC_PATCHBAY_API_URL) {
     console.error(
       "NEXT_PUBLIC_PATCHBAY_API_URL environment variable is not set"
@@ -29,9 +27,12 @@ export async function getCardData(
     redirect("https://patchbay.xyz");
   }
 
+  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${hash}/${custom_endpoint}`;
+
   const res = await fetch(url);
   if (!res.ok) {
     console.error(`API request failed with status: ${res.status}`);
+    console.error(`Failed URL: ${url}`);
     redirect("https://patchbay.xyz");
   }
 
