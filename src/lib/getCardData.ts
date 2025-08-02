@@ -15,7 +15,7 @@ export async function getCardData(
     typeof custom_endpoint !== "string" ||
     typeof hash !== "string"
   ) {
-    console.error("Invalid parameters provided to getCardData");
+    console.error("Invalid parameters provided");
     redirect("https://patchbay.xyz");
   }
 
@@ -34,21 +34,38 @@ export async function getCardData(
   }
 
   const url = `${apiUrl}/api/v1/card/public/${hash}/${custom_endpoint}`;
+  
+  try {
+    const res = await fetch(url);
 
-  const res = await fetch(url);
-  if (!res.ok) {
-    console.error(`API request failed with status: ${res.status}`);
-    console.error(`Failed URL: ${url}`);
+    if (!res.ok) {
+      console.error(`[API Error] Request failed with status: ${res.status}`);
+      console.error(`[API Error] Failed URL: ${url}`);
+      
+      // Try to get error details from response
+      try {
+        const errorData = await res.text();
+        console.error(`[API Error] Response body: ${errorData}`);
+      } catch (e) {
+        console.error(`[API Error] Could not read error response: ${String(e)}`);
+      }
+      
+      redirect("https://patchbay.xyz");
+    }
+
+    const data = (await res.json()) as BusinessCardResponse;
+
+    // Enhanced type guard for response data
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      console.error("[API Error] Invalid response format:", data);
+      redirect("https://patchbay.xyz");
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`[API Error] Fetch failed:`, error);
+    console.error(`[API Error] URL: ${url}`);
+    
     redirect("https://patchbay.xyz");
   }
-
-  const data = (await res.json()) as BusinessCardResponse;
-
-  // Enhanced type guard for response data
-  if (!data || typeof data !== "object" || Array.isArray(data)) {
-    console.error("Invalid response format:", data);
-    redirect("https://patchbay.xyz");
-  }
-
-  return data;
 }
