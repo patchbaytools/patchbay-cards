@@ -7,7 +7,7 @@ import { getCardData } from "@/lib/getCardData";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ custom_endpoint: string; hash: string }>;
+  params: Promise<{ hash: string; custom_endpoint: string }>;
 }) {
   const resolvedParams = await params;
 
