@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Patchbay Cards
 
-## Getting Started
+This project was created using `npx create-next-app@latest` with TypeScript, Tailwind CSS, and App Router.
 
-First, run the development server:
+## About
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Patchbay Cards is a digital business card platform designed for music industry professionals including artists, producers, songwriters, mixers, and other industry personnel. The platform provides customizable digital business cards with social media integration, project showcases, and professional contact information.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Reference `.env.example` and make copies as appropriate.
+- Next.js will read `.env.local`, `.env.staging`, `.env.production` depending on the build environment.
+- Environment variables include:
+  - `NEXT_PUBLIC_PATCHBAY_API_PROD_URL` - Production API endpoint
+  - `NEXT_PUBLIC_PATCHBAY_API_STAGING_URL` - Staging API endpoint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Building and running locally
 
-## Learn More
+- `npm install`
+- `npm run dev` - The Next.js development server will start on port 3001
+- `npm run build` - Build the application for production
+- `npm run start` - Start the production server
 
-To learn more about Next.js, take a look at the following resources:
+### Development tools
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run lint` - Run ESLint to check code quality
+- `npm run lint:fix` - Automatically fix ESLint issues
+- `npm run prettier` - Format code with Prettier
+- `npm run type-check` - Run TypeScript type checking
+- `npm run prebuild` - Run prettier and type checking before build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Testing locally
 
-## Deploy on Vercel
+- `npm run type-check` - Runs TypeScript type checking to ensure type safety
+- The application uses type guards for runtime validation of API responses and environment variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Generating API client types
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+When changes are made to the Patchbay API, it is necessary to re-generate types based on those changes.
+
+- `npm run build-api-client` - Generate API client types from the OpenAPI spec
+  - This assumes the server is running locally on port 8000
+- Commit the results of this script to version control
+
+## Architecture
+
+The application follows a **Component-Based Architecture** with **Layered Architecture** principles:
+
+- **Frontend Layer**: React components with TypeScript for type safety
+- **API Layer**: Server-side data fetching with environment-aware caching
+- **Data Layer**: Type-safe API responses with comprehensive type guards
+- **Presentation Layer**: Responsive UI using Tailwind CSS and Ant Design
+
+### Key Design Patterns
+
+- **Type Guards**: Extensive use of TypeScript type guards for runtime validation
+- **Repository Pattern**: Centralized data access through `getCardData.ts`
+- **Caching Strategy**: Environment-aware caching to optimize API calls
+- **Error Boundaries**: Graceful fallbacks and redirects for invalid requests
+
+### [Deployed on Vercel](https://vercel.com/patchbay/patchbay-cards)
