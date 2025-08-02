@@ -1,155 +1,656 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+
+import { IoCopyOutline } from "react-icons/io5";
+import Image from "next/image";
+
 // ** Motion Imports
 import { motion } from "motion/react";
 
-type CardData = {
-  name?: string;
-  title?: string;
-  subtitle?: string;
-  contractingInfo?: string[];
-  pubLine?: string[];
-  metadata?: {
-    isrc?: string[];
-    upc?: string;
-    rights?: string;
-    publisher?: string;
-  };
-};
+import { Tooltip } from "antd";
 
-export default function DetailedView({ data }: { data?: CardData }) {
+import useMobile from "@/app/hooks/useMobile";
+import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
+
+export default function DetailedView({
+  data,
+}: {
+  data?: BusinessCardResponse | null;
+}) {
+  const mobile = useMobile();
+  const medium = useMobile(812);
   if (!data) return null;
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
+        duration: 0.5,
       },
     },
   };
   return (
-    <div className='container mx-auto px-4 py-16'>
+    <div
+      className={`container h-full mx-auto ${mobile ? "" : "px-[33px] pb-[30px]"}  text-[#EDEEF0]`}
+    >
       <motion.div
-        className='max-w-3xl mx-auto'
+        className={`grid   h-full ${
+          mobile ? "grid-cols-1 gap-[80px]" : "grid-cols-2 gap-[100px]"
+        }`}
         initial='hidden'
         whileInView='visible'
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         variants={containerVariants}
       >
-        <motion.div variants={cardVariants}>
-          <h1 className='text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100'>
-            {data.name || "Paul McCartney"}
-          </h1>
-          <p className='text-xl mb-8 text-gray-700 dark:text-gray-300'>
-            {data.title || "Artist, Producer, Songwriter • BMI"}
-          </p>
-        </motion.div>
-        <div className='grid md:grid-cols-2 gap-12 mb-12'>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              CONTRACTING INFO
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.contractingInfo) &&
-              data.contractingInfo.length > 0 ? (
-                data.contractingInfo.map((line, i) => <p key={i}>{line}</p>)
-              ) : (
-                <>
-                  <p>Paul McCartney (fso James Paul McCartney)</p>
-                  <p>10 Downing St.</p>
-                  <p>London, UK SW1A2AA</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-          <motion.div
-            className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md'
-            variants={cardVariants}
-          >
-            <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-              PUB LINE
-            </h2>
-            <div className='space-y-2 text-gray-700 dark:text-gray-300'>
-              {Array.isArray(data.pubLine) && data.pubLine.length > 0 ? (
-                data.pubLine.map((line, i) => <p key={i}>{line}</p>)
-              ) : (
-                <>
-                  <p>James Paul McCartney</p>
-                  <p>BMI</p>
-                  <p>IPI 12345678909</p>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </div>
-        <motion.div
-          className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-12'
-          variants={cardVariants}
+        <section
+          className={`h-full w-full flex flex-col justify-start items-start ${
+            mobile ? "gap-[80px]" : "gap-[60px]"
+          } select-none`}
         >
-          <h2 className='text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-            ADDITIONAL METADATA
-          </h2>
-          <div className='grid md:grid-cols-2 gap-4'>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                ISRC Codes
-              </h3>
-              <ul className='list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300'>
-                {Array.isArray(data.metadata?.isrc) &&
-                data.metadata?.isrc.length > 0 ? (
-                  data.metadata.isrc.map((code, i) => <li key={i}>{code}</li>)
-                ) : (
-                  <>
-                    <li>USRC12345678</li>
-                    <li>GBRC98765432</li>
-                  </>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                UPC/EAN
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.upc || "602567924128"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Performing Rights
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.rights || "BMI"}
-              </p>
-            </div>
-            <div>
-              <h3 className='font-semibold mb-2 text-gray-800 dark:text-gray-200'>
-                Publisher
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300'>
-                {data.metadata?.publisher || "MPL Communications"}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-        <motion.div className='text-center' variants={cardVariants}>
-          <button className='bg-black dark:bg-gray-700 text-white px-6 py-3 rounded-md hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors'>
-            Download Full Metadata
-          </button>
-        </motion.div>
+          {data.contact_info &&
+            (data.contact_info.representation_contact_email ||
+              data.contact_info.legal_contact_email) && (
+              <motion.div
+                initial={{ opacity: 0, x: 0 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className='w-full  gap-[16px] flex flex-col justify-start items-start'
+              >
+                <h1
+                  className={` text-[#EDEEF0] ${
+                    mobile ? "text-[20px]" : "text-[24px]"
+                  }`}
+                  style={{ fontFamily: "var(--font-inconsolata)" }}
+                >
+                  [CONTACT]
+                </h1>
+                <section
+                  className='w-full flex flex-row justify-start items-start gap-[40px]'
+                  style={{ fontFamily: "var(--font-neue-haas)" }}
+                >
+                  {data.config?.show_representation &&
+                    data.contact_info?.representation_contact_email && (
+                      <div className='flex flex-col '>
+                        <span
+                          className={`${
+                            mobile
+                              ? "text-[16px]"
+                              : "text-[18px] hover:underline cursor-pointer"
+                          } `}
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.representation_contact_email ||
+                                ""
+                            );
+                          }}
+                        >
+                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                            <Tooltip
+                              title='Copied!'
+                              trigger={["click"]}
+                              placement='top'
+                              open={!mobile ? undefined : false}
+                            >
+                              {data.contact_info.representation_contact_email}
+                            </Tooltip>
+                            {mobile ? (
+                              <Tooltip
+                                title='Copied!'
+                                trigger={["click"]}
+                                placement='top'
+                                open={mobile ? undefined : false}
+                              >
+                                <IoCopyOutline
+                                  size={20}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(
+                                      data.contact_info
+                                        ?.representation_contact_email || ""
+                                    );
+                                  }}
+                                />
+                              </Tooltip>
+                            ) : undefined}
+                          </span>
+                        </span>
+
+                        <span
+                          className={mobile ? "text-[16px]" : "text-[18px]"}
+                          style={{ color: "rgba(255, 255, 255, 0.50" }}
+                        >
+                          Representation
+                        </span>
+                      </div>
+                    )}
+                  {data.config?.show_legal &&
+                    data.contact_info?.legal_contact_email && (
+                      <div className='flex flex-col '>
+                        <span
+                          className={`${
+                            mobile
+                              ? "text-[16px]"
+                              : "text-[18px] hover:underline cursor-pointer"
+                          } `}
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              data.contact_info?.legal_contact_email || ""
+                            );
+                          }}
+                        >
+                          <span className='flex flex-row justify-start items-end gap-[16px]'>
+                            <Tooltip
+                              title='Copied!'
+                              trigger={["click"]}
+                              placement='top'
+                              open={!mobile ? undefined : false}
+                            >
+                              {data.contact_info.legal_contact_email}
+                            </Tooltip>
+                            {mobile ? (
+                              <Tooltip
+                                title='Copied!'
+                                trigger={["click"]}
+                                placement='top'
+                                open={mobile ? undefined : false}
+                              >
+                                <IoCopyOutline
+                                  size={20}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(
+                                      data.contact_info?.legal_contact_email ||
+                                        ""
+                                    );
+                                  }}
+                                />
+                              </Tooltip>
+                            ) : undefined}
+                          </span>
+                        </span>
+
+                        <span
+                          className={mobile ? "text-[16px]" : "text-[18px]"}
+                          style={{ color: "rgba(255, 255, 255, 0.50" }}
+                        >
+                          Legal
+                        </span>
+                      </div>
+                    )}
+                </section>
+              </motion.div>
+            )}
+          {data.bio && data.config?.show_bio && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full h-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [BIO]
+                  {mobile ? (
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='top'
+                      open={mobile ? undefined : false}
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(data?.bio || "");
+                        }}
+                      />
+                    </Tooltip>
+                  ) : undefined}
+                </span>
+              </h1>
+
+              <span
+                className={`${
+                  mobile
+                    ? "text-[16px]"
+                    : "text-[18px] hover:underline  cursor-pointer"
+                } gap-[8px] flex flex-col text-ellipsis overflow-y-scroll hide-scrollbar   justify-start items-start`}
+                onClick={() => {
+                  navigator.clipboard.writeText(data?.bio || "");
+                }}
+                style={{
+                  fontFamily: "var(--font-neue-haas)",
+                  lineHeight: "150%",
+                  color: "#EDEEF0",
+                  height: mobile
+                    ? "auto"
+                    : `calc(100vh - ${data.config?.show_representation ? 315 : 120}px)`,
+                }}
+              >
+                <Tooltip
+                  title='Copied!'
+                  trigger={["click"]}
+                  placement='top'
+                  open={!mobile ? undefined : false}
+                >
+                  <span className='w-full flex flex-col justify-start items-start gap-[8px]'>
+                    {data.bio.split("\n").map((line) => (
+                      <span key={line} className='w-full'>
+                        {line}
+                      </span>
+                    ))}
+                  </span>
+                </Tooltip>
+              </span>
+            </motion.div>
+          )}
+        </section>
+        <section
+          className={`h-full w-full flex flex-col justify-start items-start ${
+            mobile ? "gap-[80px]" : "gap-[60px]"
+          } select-none`}
+          style={{ fontFamily: "var(--font-neue-haas)" }}
+        >
+          {data.songwriter_details && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                [SONGWRITER INFO]
+              </h1>
+
+              <section
+                className={`w-full flex ${mobile || medium ? "flex-col justify-start items-start gap-[30px]" : "flex-row justify-between items-start"} `}
+                style={{ fontFamily: "var(--font-neue-haas)" }}
+              >
+                <div className='flex flex-col '>
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_name || ""
+                      );
+                    }}
+                  >
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
+                        {data.songwriter_details.songwriter_name}
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_name || ""
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      ) : undefined}
+                    </span>
+                  </span>
+
+                  <span
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    Legal Name
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_IPI || ""
+                      );
+                    }}
+                  >
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
+                        {data.songwriter_details.songwriter_IPI}
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_IPI || ""
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      ) : undefined}
+                    </span>
+                  </span>
+
+                  <span
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    IPI
+                  </span>
+                </div>
+                <div className='flex flex-col '>
+                  <span
+                    className={`${
+                      mobile
+                        ? "text-[16px]"
+                        : "text-[18px] hover:underline cursor-pointer"
+                    } `}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data.songwriter_details?.songwriter_PRO || ""
+                      );
+                    }}
+                  >
+                    <span className='flex flex-row justify-start items-end gap-[16px]'>
+                      <Tooltip
+                        title='Copied!'
+                        trigger={["click"]}
+                        placement='top'
+                        open={!mobile ? undefined : false}
+                      >
+                        {data.songwriter_details.songwriter_PRO}
+                      </Tooltip>
+                      {mobile ? (
+                        <Tooltip
+                          title='Copied!'
+                          trigger={["click"]}
+                          placement='top'
+                          open={mobile ? undefined : false}
+                        >
+                          <IoCopyOutline
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                data.songwriter_details?.songwriter_PRO || ""
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      ) : undefined}
+                    </span>
+                  </span>
+
+                  <span
+                    className={mobile ? "text-[16px]" : "text-[18px]"}
+                    style={{ color: "rgba(255, 255, 255, 0.50" }}
+                  >
+                    PRO
+                  </span>
+                </div>
+              </section>
+            </motion.div>
+          )}
+          {data.config?.show_pub_line && data.pub_line && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className={
+                "w-full  gap-[16px] flex flex-col justify-start items-start"
+              }
+            >
+              <h1
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [PUB LINE]
+                  {mobile ? (
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='top'
+                      open={mobile ? undefined : false}
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(data.pub_line || "");
+                        }}
+                      />
+                    </Tooltip>
+                  ) : undefined}
+                </span>
+              </h1>
+
+              <span
+                className={`${
+                  mobile
+                    ? "text-[16px]"
+                    : "text-[18px] hover:underline cursor-pointer"
+                } w-full  flex flex-col justify-start items-start`}
+                onClick={() => {
+                  navigator.clipboard.writeText(data.pub_line || "");
+                }}
+              >
+                <Tooltip
+                  title='Copied!'
+                  trigger={["click"]}
+                  placement='top'
+                  open={!mobile ? undefined : false}
+                >
+                  {data.pub_line?.split("\n").map((line) => (
+                    <span key={line} className='w-full'>
+                      {line}
+                    </span>
+                  ))}
+                </Tooltip>
+              </span>
+            </motion.div>
+          )}
+          {data.config?.show_contracting_info && (
+            <motion.div
+              initial={{ opacity: 0, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className='w-full  gap-[16px] flex flex-col justify-start items-start'
+            >
+              <h1
+                className={` ${mobile ? "text-[20px]" : "text-[24px]"}`}
+                style={{ fontFamily: "var(--font-inconsolata)" }}
+              >
+                <span className='flex flex-row justify-start items-center gap-[16px]'>
+                  [CONTRACTING INFO]
+                  {mobile ? (
+                    <Tooltip
+                      title='Copied!'
+                      trigger={["click"]}
+                      placement='topLeft'
+                      open={mobile ? undefined : false}
+                    >
+                      <IoCopyOutline
+                        size={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            (data.contracting_info?.address.name
+                              ? data.contracting_info?.address.name + ", "
+                              : "") +
+                              (data.contracting_info?.care_of
+                                ? "c/o " + data.contracting_info?.care_of + ", "
+                                : "") +
+                              (data.contracting_info?.address.address_line_1 ||
+                                "") +
+                              ", " +
+                              (data.contracting_info?.address.address_line_2
+                                ? data.contracting_info?.address
+                                    .address_line_2 + ", "
+                                : "") +
+                              (data.contracting_info?.address.city || "") +
+                              ", " +
+                              (data.contracting_info?.address.state || "") +
+                              " " +
+                              (data.contracting_info?.address.postal_code ||
+                                "") +
+                              ", " +
+                              (data.contracting_info?.address.country || "")
+                          );
+                        }}
+                      />
+                    </Tooltip>
+                  ) : undefined}
+                </span>
+              </h1>
+
+              <Tooltip
+                title='Copied!'
+                trigger={["click"]}
+                placement='topLeft'
+                open={!mobile ? undefined : false}
+              >
+                <section
+                  className={` flex   leading-[150%] w-full flex-col justify-start items-start  ${
+                    mobile
+                      ? "text-[16px] mb-[24px]"
+                      : "text-[18px] hover:underline cursor-pointer"
+                  }`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      (data.contracting_info?.address.name
+                        ? data.contracting_info?.address.name + ", "
+                        : "") +
+                        (data.contracting_info?.care_of
+                          ? "c/o " + data.contracting_info?.care_of + ", "
+                          : "") +
+                        (data.contracting_info?.address.address_line_1 || "") +
+                        ", " +
+                        (data.contracting_info?.address.address_line_2
+                          ? data.contracting_info?.address.address_line_2 + ", "
+                          : "") +
+                        (data.contracting_info?.address.city || "") +
+                        ", " +
+                        (data.contracting_info?.address.state || "") +
+                        " " +
+                        (data.contracting_info?.address.postal_code || "") +
+                        ", " +
+                        (data.contracting_info?.address.country || "")
+                    );
+                  }}
+                >
+                  <span>
+                    {data.contracting_info?.address.name
+                      ? data.contracting_info?.address.name
+                      : ""}
+                  </span>
+                  <span>
+                    {data.contracting_info?.care_of
+                      ? "c/o " + data.contracting_info?.care_of
+                      : ""}
+                  </span>
+                  <span>
+                    {data.contracting_info?.address.address_line_1 ?? ""}
+                  </span>
+                  {data.contracting_info?.address.address_line_2 && (
+                    <span>{data.contracting_info?.address.address_line_2}</span>
+                  )}
+
+                  <span>
+                    {`${data.contracting_info?.address.city ? data.contracting_info?.address.city + ", " : ""} ${data.contracting_info?.address.state ? data.contracting_info?.address.state + " " : ""} ${data.contracting_info?.address.postal_code ? data.contracting_info?.address.postal_code : ""}`}
+                  </span>
+
+                  {data.contracting_info?.address.country && (
+                    <span>{data.contracting_info?.address.country}</span>
+                  )}
+                </section>
+              </Tooltip>
+            </motion.div>
+          )}
+          {mobile && (
+            <motion.footer
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                marginBottom: 24,
+                userSelect: "none",
+              }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image
+                src='/images/poweredbypatchbay.png'
+                alt='Patchbay Logo'
+                width={177}
+                height={14}
+              />
+            </motion.footer>
+          )}
+        </section>
       </motion.div>
+      {!mobile && (
+        <motion.footer
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            userSelect: "none",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Image
+            src='/images/poweredbypatchbay.png'
+            alt='Patchbay Logo'
+            width={177}
+            height={14}
+          />
+        </motion.footer>
+      )}
     </div>
   );
 }
