@@ -1,6 +1,7 @@
 // ** React/Next.js Imports
 import type { Metadata } from "next";
 import { Inter, Inconsolata, DM_Mono } from "next/font/google";
+
 import { ConfigProvider } from "antd";
 
 import localFont from "next/font/local";

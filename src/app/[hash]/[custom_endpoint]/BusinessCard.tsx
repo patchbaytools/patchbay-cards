@@ -8,7 +8,6 @@ import { useScroll, useSpring, motion, useTransform } from "motion/react";
 import { Button } from "antd";
 
 import useMobile from "@/app/hooks/useMobile";
-
 import CardTemplate from "@/components/business-card/index";
 import DetailedView from "@/components/detailed-view";
 import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";

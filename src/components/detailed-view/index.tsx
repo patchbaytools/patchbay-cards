@@ -1,17 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-import { IoCopyOutline } from "react-icons/io5";
-import Image from "next/image";
-
-// ** Motion Imports
 import { motion } from "motion/react";
 
 import { Tooltip } from "antd";
 
 import useMobile from "@/app/hooks/useMobile";
 import type { BusinessCardResponse } from "@/lib/BusinessCardResponse";
+
+import { IoCopyOutline } from "react-icons/io5";
 
 export default function DetailedView({
   data,

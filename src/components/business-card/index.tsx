@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 
 // ** Custom Components, Hooks, Utils, etc.
+import useMobile from "@/app/hooks/useMobile";
 import Card from "@/components/business-card/3DLicenseCard";
 import {
   type BusinessCardResponse,
@@ -17,7 +18,6 @@ import { ImYoutube2 } from "react-icons/im";
 import { IoLogoInstagram } from "react-icons/io";
 import { PiTiktokLogo } from "react-icons/pi";
 
-import useMobile from "@/app/hooks/useMobile";
 
 type LinkObject =
   | {
