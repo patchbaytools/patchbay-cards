@@ -2,7 +2,26 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
+import { 
+  getCachedEnvironment, 
+  setCachedEnvironment, 
+  removeCachedEnvironment,
+  fetchWithTimeout,
+  type Environment,
+} from "@/lib/cache";
+import { REQUEST_TIMEOUT } from "@/utils/constants";
+
 import type { BusinessCardResponse } from "./BusinessCardResponse";
+
+// Type guard to validate environment
+function isValidEnvironment(env: unknown): env is Environment {
+  return env === 'prod' || env === 'staging';
+}
+
+// Type guard to validate BusinessCardResponse
+function isValidBusinessCardResponse(data: unknown): data is BusinessCardResponse {
+  return Boolean(data && typeof data === "object" && !Array.isArray(data));
+}
 
 export async function getCardData(
   custom_endpoint: string,
@@ -15,34 +34,73 @@ export async function getCardData(
     typeof custom_endpoint !== "string" ||
     typeof hash !== "string"
   ) {
-    console.error("Invalid parameters provided to getCardData");
+    console.error("Invalid parameters provided");
     redirect("https://patchbay.xyz");
   }
+  
+  // Check cache first - if we know which environment has this data
+  const cachedEnv = getCachedEnvironment(hash, custom_endpoint);
+  if (cachedEnv && isValidEnvironment(cachedEnv)) {
+    const apiUrl = cachedEnv === 'prod' 
+      ? process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL
+      : process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL;
+    
+    if (!apiUrl) {
+      console.error(`API URL not set for ${cachedEnv} environment`);
+      // Remove invalid cache entry and continue
+      removeCachedEnvironment(hash, custom_endpoint);
+    } else {
+      const url = `${apiUrl}/api/v1/card/public/${custom_endpoint}/${hash}`;
 
-  // Type guard for environment variable - CHECK BEFORE URL CONSTRUCTION
-  if (!process.env.NEXT_PUBLIC_PATCHBAY_API_URL) {
-    console.error(
-      "NEXT_PUBLIC_PATCHBAY_API_URL environment variable is not set"
-    );
-    redirect("https://patchbay.xyz");
+      try {
+        const res = await fetchWithTimeout(url, REQUEST_TIMEOUT);
+        if (res.ok) {
+          const data = await res.json() as BusinessCardResponse;
+          if (isValidBusinessCardResponse(data)) {
+            return data;
+          }
+        }
+      } catch (error) {
+        console.error(`[API Error] Cached environment failed:`, error);
+      }
+      
+      // If cached environment failed, remove from cache and try both
+      removeCachedEnvironment(hash, custom_endpoint);
+    }
   }
 
-  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
-
-  const res = await fetch(url);
-  if (!res.ok) {
-    console.error(`API request failed with status: ${res.status}`);
-    console.error(`Failed URL: ${url}`);
-    redirect("https://patchbay.xyz");
+  // Try prod first
+  const prodUrl = `${process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
+  
+  try {
+    const prodRes = await fetchWithTimeout(prodUrl, REQUEST_TIMEOUT);
+    if (prodRes.ok) {
+      const data = await prodRes.json() as BusinessCardResponse;
+      if (isValidBusinessCardResponse(data)) {
+        setCachedEnvironment(hash, custom_endpoint, 'prod');
+        return data;
+      }
+    }
+  } catch (error) {
+    console.error(`[API Error] Prod lookup failed:`, error);
   }
 
-  const data = (await res.json()) as BusinessCardResponse;
-
-  // Enhanced type guard for response data
-  if (!data || typeof data !== "object" || Array.isArray(data)) {
-    console.error("Invalid response format:", data);
-    redirect("https://patchbay.xyz");
+  // Try staging if prod doesn't have it
+  const stagingUrl = `${process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
+  
+  try {
+    const stagingRes = await fetchWithTimeout(stagingUrl, REQUEST_TIMEOUT);
+    if (stagingRes.ok) {
+      const data = await stagingRes.json() as BusinessCardResponse;
+      if (isValidBusinessCardResponse(data)) {
+        setCachedEnvironment(hash, custom_endpoint, 'staging');
+        return data;
+      }
+    }
+  } catch (error) {
+    console.error(`[API Error] Staging lookup failed:`, error);
   }
 
-  return data;
+  // Neither environment has the data
+  redirect("https://patchbay.xyz");
 }
