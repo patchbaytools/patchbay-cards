@@ -19,15 +19,21 @@ export async function getCardData(
     redirect("https://patchbay.xyz");
   }
 
+  // Determine which API URL to use based on environment
+  const isProduction = process.env.NODE_ENV === "production";
+  const apiUrl = isProduction 
+    ? process.env.NEXT_PUBLIC_PATCHBAY_API_PROD_URL
+    : process.env.NEXT_PUBLIC_PATCHBAY_API_STAGING_URL;
+
   // Type guard for environment variable - CHECK BEFORE URL CONSTRUCTION
-  if (!process.env.NEXT_PUBLIC_PATCHBAY_API_URL) {
+  if (!apiUrl) {
     console.error(
-      "NEXT_PUBLIC_PATCHBAY_API_URL environment variable is not set"
+      `API URL not set for ${isProduction ? 'production' : 'staging'} environment`
     );
     redirect("https://patchbay.xyz");
   }
 
-  const url = `${process.env.NEXT_PUBLIC_PATCHBAY_API_URL}/api/v1/card/public/${custom_endpoint}/${hash}`;
+  const url = `${apiUrl}/api/v1/card/public/${hash}/${custom_endpoint}`;
 
   const res = await fetch(url);
   if (!res.ok) {
