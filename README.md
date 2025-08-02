@@ -58,6 +58,4 @@ The application follows a **Component-Based Architecture** with **Layered Archit
 - **Caching Strategy**: Environment-aware caching to optimize API calls
 - **Error Boundaries**: Graceful fallbacks and redirects for invalid requests
 
-## Deployed on Vercel
-
-[Vercel Deployment](https://vercel.com/patchbay/patchbay-cards)
+## [Deployed on Vercel](https://vercel.com/patchbay/patchbay-cards)
